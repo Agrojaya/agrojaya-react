@@ -1,13 +1,14 @@
-
-import './App.css'
+// src/App.jsx
+import Navbar from './components/Navbar';
+import Header from './components/Header';
 
 function App() {
-
   return (
-    <>      
-      <h1>AYO TURU</h1>
-    </>
-  )
+    <div>
+      <Navbar />
+      <Header />
+    </div>
+  );
 }
 
-export default App
+export default App;
