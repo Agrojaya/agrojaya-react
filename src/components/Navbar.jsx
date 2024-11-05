@@ -1,5 +1,9 @@
 // src/components/Navbar.jsx
+<<<<<<< HEAD
 import logo from '../assets/images/logo.png';
+=======
+import logo from "../assets/images/logo.png";
+>>>>>>> Nabila
 
 function Navbar() {
   return (
@@ -9,9 +13,32 @@ function Navbar() {
       </div>
       {/* Apply ml-auto to move the list items to the right */}
       <ul className="flex space-x-8 text-black ml-auto">
+<<<<<<< HEAD
         <li><a href="#" className="hover:text-gray-700">Artikel</a></li>
         <li><a href="#" className="hover:text-gray-700">Tentang Kami</a></li>
         <li><a href="#" className="hover:text-gray-700">Kontak</a></li>
+=======
+        <li>
+          <a href="/" className="hover:text-gray-700">
+            Beranda
+          </a>
+        </li>
+        <li>
+          <a href="/artikel" className="hover:text-gray-700">
+            Artikel
+          </a>
+        </li>
+        <li>
+          <a href="#" className="hover:text-gray-700">
+            Tentang Kami
+          </a>
+        </li>
+        <li>
+          <a href="#" className="hover:text-gray-700">
+            Kontak
+          </a>
+        </li>
+>>>>>>> Nabila
       </ul>
       <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md ml-4">
         Get Started
