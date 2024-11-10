@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Link } from "react-router-dom";
 import artikelImage from "../assets/images/artikel-image.png"; // Replace with your actual image path
 
