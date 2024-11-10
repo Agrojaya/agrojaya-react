@@ -4,14 +4,13 @@ import playStoreButton from "../assets/images/play-store-button.png"; // Replace
 
 function Header() {
   return (
-    <header className="flex items-center justify-between px-6 py-2 bg-gradient-to-r from-gray-100 to-gray-200">
-      <div className="max-w-lg">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          Managing Your Task <br /> and Productivity <br /> Become Easier
+    <header className="flex items-center justify-between px-20 py-12 bg-gradient-to-r from-green-50 to-gray-100">
+      <div className="max-w-xl">
+        <h1 className="text-5xl font-semibold text-gray-900 mb-6 leading-tight">
+          Atur Kebun dan Aktivitas <br /> Anda Lebih Efisien <br /> dengan AgroJaya
         </h1>
-        <p className="text-gray-600 mb-6">
-          dan tidak memiliki banyak sumber pengairan untuk lahannya dengan cara
-          menyediakan jasa pemasangan urban farming.
+        <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+          AgroJaya adalah aplikasi mobile dan web yang menyediakan layanan Urban Farming, artikel edukasi, dan fitur reminder untuk membantu petani mengatur aktivitas mereka.
         </p>
         <a
           href="https://play.google.com"
@@ -21,12 +20,12 @@ function Header() {
           <img
             src={playStoreButton}
             alt="Get it on Play Store"
-            className="w-40"
+            className="w-48"
           />
         </a>
       </div>
-      <div className="flex-shrink-0">
-        <img src={phoneImage} alt="Phone" className="w-82" />
+      <div className="flex-shrink-0 self-center relative -right-16 -bottom-12">
+        <img src={phoneImage} alt="Phone" className="w-87" />
       </div>
     </header>
   );
