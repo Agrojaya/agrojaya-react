@@ -1,14 +1,45 @@
-import React from "react";
-import { FaSearch, FaPrint } from "react-icons/fa";
+import axios from "axios";
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, useState } from "react";
+import { FaPrint, FaSearch } from "react-icons/fa";
 
 const AdminDashboard = ({ activeSection }) => {
+  const [activities, setActivities] = useState([]);
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    // Mengambil data aktivitas user
+    axios.get('http://localhost:3000/api/user-activity', {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
+      .then((response) => {
+        setActivities(response.data.activities);
+      })
+      .catch((error) => {
+        console.error("Error fetching user activities:", error);
+      });
+
+    // Mengambil data transaksi
+      axios.get('http://localhost:3000/api/transactions', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      })
+        .then((response) => {
+          console.log("Transactions Data:", response.data); // Tambahkan log
+          setTransactions(response.data.transactions);
+        })
+        .catch((error) => {
+          console.error("Error fetching transactions:", error);
+        });
+    }, []);
+    
+
   return (
     <div>
       {/* Conditional Content Rendering */}
       {activeSection === "dashboard" && (
         <div className="bg-white rounded-lg shadow p-4 mb-6">
           <h2 className="text-2xl font-bold text-gray-800">
-            Sri Rahayu, Selamat Datang kembali!
+            Sri Rahayu, Selamat Datang kembali! {/*pakai first_name dan last_name dari user admin yang sedang login */}
           </h2>
         </div>
       )}
@@ -20,17 +51,19 @@ const AdminDashboard = ({ activeSection }) => {
           <div className="col-span-1 bg-white rounded-lg shadow-lg p-6">
             <h3 className="text-lg font-bold mb-4">Aktivitas</h3>
             <ul>
-              <li className="flex items-center mb-4">
-                <img
-                  src="src/assets/images/pp.png"
-                  alt="User"
-                  className="w-8 h-8 rounded-full mr-3"
-                />
-                <div>
-                  <p className="text-gray-800 font-semibold">Aisyah Sadiah</p>
-                  <p className="text-gray-500 text-sm">Membuat Pesanan</p>
-                </div>
-              </li>
+              {activities.map((activity) => (
+                <li key={activity.id} className="flex items-center mb-4">
+                  <img
+                    src="src/assets/images/pp.png"
+                    alt="User"
+                    className="w-8 h-8 rounded-full mr-3"
+                  />
+                  <div>
+                    <p className="text-gray-800 font-semibold">{activity.username}</p>
+                    <p className="text-gray-500 text-sm">Membuat Pesanan</p>{/*pakai data dari database (sementara default membuat pesanan) */}
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -64,13 +97,15 @@ const AdminDashboard = ({ activeSection }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b">
-                    <td className="px-4 py-2">001</td>
-                    <td className="px-4 py-2">Aisyah Sadiah</td>
-                    <td className="px-4 py-2">Paket Dasar</td>
-                    <td className="px-4 py-2">Rp 500.000</td>
-                    <td className="px-4 py-2 text-green-600">Proses</td>
-                  </tr>
+                  {transactions.map((transaction) => (
+                    <tr key={transaction.id} className="border-b">
+                      <td className="px-4 py-2">{transaction.invoice_number}</td>
+                      <td className="px-4 py-2">{transaction.username}</td>
+                      <td className="px-4 py-2">{transaction.package_name}</td>
+                      <td className="px-4 py-2">Rp {transaction.price}</td>
+                      <td className="px-4 py-2 text-green-600">{transaction.status}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
