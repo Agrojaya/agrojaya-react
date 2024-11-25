@@ -1,38 +1,24 @@
-import React from "react";
-import { FaSearch, FaEllipsisV } from "react-icons/fa";
-
-const packages = [
-  {
-    name: "Paket Dasar",
-    description:
-      "Instalasi sederhana untuk kebun vertikal atau hidroponik kecil, termasuk 1-2 variasi tanaman sayuran atau herba, tanpa sistem irigasi",
-    price: "Rp 150.000",
-    image: "https://via.placeholder.com/80", // Replace with your image paths
-  },
-  {
-    name: "Paket Menengah",
-    description:
-      "Instalasi sederhana untuk kebun vertikal atau hidroponik kecil, termasuk 1-2 variasi tanaman sayuran atau herba, tanpa sistem irigasi",
-    price: "Rp 150.000",
-    image: "https://via.placeholder.com/80",
-  },
-  {
-    name: "Paket Lengkap",
-    description:
-      "Instalasi sederhana untuk kebun vertikal atau hidroponik kecil, termasuk 1-2 variasi tanaman sayuran atau herba, tanpa sistem irigasi",
-    price: "Rp 150.000",
-    image: "https://via.placeholder.com/80",
-  },
-  {
-    name: "Paket Premium",
-    description:
-      "Instalasi sederhana untuk kebun vertikal atau hidroponik kecil, termasuk 1-2 variasi tanaman sayuran atau herba, tanpa sistem irigasi",
-    price: "Rp 150.000",
-    image: "https://via.placeholder.com/80",
-  },
-];
+import React, { useEffect, useState } from "react";
+import { FaEllipsisV } from "react-icons/fa";
 
 const DaftarPaket = () => {
+  const [packages, setPackages] = useState([]);
+
+  // Fetch packages from the backend
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/data_paket'); // Make sure the URL matches your backend API
+        const data = await response.json();
+        setPackages(data); // Set packages data from the API response
+      } catch (error) {
+        console.error("Error fetching packages:", error);
+      }
+    };
+
+    fetchPackages();
+  }, []);
+
   return (
     <div className="flex min-h-screen bg-green-100">
       {/* Main Content */}
@@ -52,9 +38,7 @@ const DaftarPaket = () => {
               {packages.map((pkg, index) => (
                 <tr
                   key={index}
-                  className={`${
-                    index % 2 === 0 ? "bg-green-50" : "bg-green-100"
-                  }`}
+                  className={`${index % 2 === 0 ? "bg-green-50" : "bg-green-100"}`}
                 >
                   <td className="px-4 py-2 font-semibold">{pkg.name}</td>
                   <td className="px-4 py-2 text-gray-700">
@@ -67,7 +51,7 @@ const DaftarPaket = () => {
                   <td className="px-4 py-2">
                     <div className="flex items-center">
                       <img
-                        src={pkg.image}
+                        src={pkg.photo} // Make sure 'photo' key is correct in your data
                         alt={pkg.name}
                         className="w-16 h-16 rounded-md object-cover"
                       />

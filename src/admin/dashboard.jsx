@@ -9,7 +9,7 @@ const AdminDashboard = ({ activeSection }) => {
 
   useEffect(() => {
     // Mengambil data aktivitas user
-    axios.get('http://localhost:3000/api/user-activity', {
+    axios.get('http://localhost:3000/activities', {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     })
       .then((response) => {
@@ -20,7 +20,7 @@ const AdminDashboard = ({ activeSection }) => {
       });
 
     // Mengambil data transaksi
-      axios.get('http://localhost:3000/api/transactions', {
+      axios.get('http://localhost:3000/transactions', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       })
         .then((response) => {
@@ -60,7 +60,7 @@ const AdminDashboard = ({ activeSection }) => {
                   />
                   <div>
                     <p className="text-gray-800 font-semibold">{activity.username}</p>
-                    <p className="text-gray-500 text-sm">Membuat Pesanan</p>{/*pakai data dari database (sementara default membuat pesanan) */}
+                    <p className="text-gray-500 text-sm">Membuat Pesanan</p>{/*pakai data dari database berdasarkan status dari transactions */}
                   </div>
                 </li>
               ))}

@@ -11,18 +11,26 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/login", {
-        email,
-        password,
-      });
-      // Store token in localStorage or sessionStorage
-      localStorage.setItem("authToken", response.data.token);
-      // Redirect to the admin dashboard
-      navigate("/dashboardadmin");
+        const response = await axios.post(
+            "http://localhost:3000/login", 
+            { email, password }, 
+            { withCredentials: true } // Enable sending cookies
+        );
+
+        if (response.data.user.role !== 'Admin') {
+            setErrorMessage("Hanya Admin yang dapat login.");
+            return;
+        }
+
+        localStorage.setItem("authToken", response.data.accessToken);
+        navigate("/dashboardadmin");
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || "Login failed");
+        setErrorMessage(
+            error.response?.data?.msg || "Terjadi kesalahan saat login"
+        );
     }
-  };
+};
+
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
