@@ -6,6 +6,7 @@ import { FaPrint, FaSearch } from "react-icons/fa";
 const AdminDashboard = ({ activeSection }) => {
   const [activities, setActivities] = useState([]);
   const [transactions, setTransactions] = useState([]);
+  const [user, setUser] = useState({ first_name: "", last_name: "" });
 
   useEffect(() => {
     // Mengambil data aktivitas user
@@ -20,18 +21,28 @@ const AdminDashboard = ({ activeSection }) => {
       });
 
     // Mengambil data transaksi
-      axios.get('http://localhost:3000/transactions', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    axios.get('http://localhost:3000/transactions', {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    })
+      .then((response) => {
+        setTransactions(response.data.transactions);
       })
-        .then((response) => {
-          console.log("Transactions Data:", response.data); // Tambahkan log
-          setTransactions(response.data.transactions);
-        })
-        .catch((error) => {
-          console.error("Error fetching transactions:", error);
-        });
-    }, []);
-    
+      .catch((error) => {
+        console.error("Error fetching transactions:", error);
+      });
+
+    // Mengambil data user yang sedang login
+    axios.get('http://localhost:3000/user', {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
+      .then((response) => {
+        setUser(response.data.user); // Menyimpan data user ke state
+      })
+      .catch((error) => {
+        console.error("Error fetching user data:", error);
+      });
+
+  }, []);
 
   return (
     <div>
@@ -39,7 +50,7 @@ const AdminDashboard = ({ activeSection }) => {
       {activeSection === "dashboard" && (
         <div className="bg-white rounded-lg shadow p-4 mb-6">
           <h2 className="text-2xl font-bold text-gray-800">
-            Sri Rahayu, Selamat Datang kembali! {/*pakai first_name dan last_name dari user admin yang sedang login */}
+            {`${user.first_name} ${user.last_name}, Selamat Datang kembali!`}
           </h2>
         </div>
       )}
