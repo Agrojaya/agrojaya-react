@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AdminDashboard from "./dashboard";
 import DaftarPaket from "./daftarpaket";
-import ListArtikel from "./postartikel";
+import ListArtikel from "./ListArtikel";
 
 const MainAdmin = () => {
   const [activeSection, setActiveSection] = useState("dashboard");

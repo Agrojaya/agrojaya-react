@@ -1,10 +1,13 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TambahArtikel = () => {
   const [judul, setJudul] = useState("");
   const [isi, setIsi] = useState("");
   const [jumlahKata, setJumlahKata] = useState(0);
+  const [gambar, setGambar] = useState(null);
+  const [previewGambar, setPreviewGambar] = useState(null);
+  const navigate = useNavigate();  // Hook untuk navigasi
 
   const handleIsiChange = (event) => {
     const text = event.target.value;
@@ -15,6 +18,41 @@ const TambahArtikel = () => {
         .split(/\s+/)
         .filter((word) => word).length
     );
+  };
+
+  const handleGambarChange = (event) => {
+    const file = event.target.files[0];
+    setGambar(file);
+
+    // Buat pratinjau gambar
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewGambar(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPreviewGambar(null);
+    }
+  };
+
+  const handleSimpan = () => {
+    // Fungsi untuk menyimpan data artikel (judul, isi, gambar)
+    if (!judul || !isi || !gambar) {
+      alert("Semua field harus diisi!");
+      return;
+    }
+
+    // Simpan logikanya di sini, seperti mengirim data ke API
+    console.log("Judul:", judul);
+    console.log("Isi:", isi);
+    console.log("Gambar:", gambar);
+
+    alert("Artikel berhasil disimpan!");
+  };
+
+  const handleKembali = () => {
+    navigate(-1);  // Navigasi ke halaman sebelumnya
   };
 
   return (
@@ -60,11 +98,44 @@ const TambahArtikel = () => {
             Jumlah Kata: {jumlahKata}
           </div>
 
+          {/* Input Upload Gambar */}
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="gambar"
+          >
+            Upload Gambar
+          </label>
+          <input
+            type="file"
+            id="gambar"
+            accept="image/*"
+            onChange={handleGambarChange}
+            className="mb-4"
+          />
+
+          {/* Pratinjau Gambar */}
+          {previewGambar && (
+            <div className="mb-4">
+              <p className="text-gray-500 text-sm">Pratinjau Gambar:</p>
+              <img
+                src={previewGambar}
+                alt="Preview"
+                className="w-40 h-40 object-cover rounded-md"
+              />
+            </div>
+          )}
+
           <div className="flex justify-end space-x-4">
-            <button className="px-6 py-2 bg-yellow-400 text-white rounded-md">
+            <button
+              onClick={handleKembali}  // Aksi untuk kembali
+              className="px-6 py-2 bg-yellow-400 text-white rounded-md"
+            >
               Kembali
             </button>
-            <button className="px-6 py-2 bg-green-600 text-white rounded-md">
+            <button
+              onClick={handleSimpan}
+              className="px-6 py-2 bg-green-600 text-white rounded-md"
+            >
               Simpan
             </button>
           </div>

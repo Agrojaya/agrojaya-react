@@ -12,6 +12,8 @@ import DetailArtikel from "./landing/DetailArtikel";
 import Footer from "./components/Footer";
 import AdminLogin from "./admin/login";
 import AdminDashboard from "./admin/MainAdmin";
+import ListArtikel from "./admin/ListArtikel";
+import TambahArtikel from "./admin/postartikel";
 
 function App() {
   const location = useLocation();
@@ -31,13 +33,15 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/artikel" element={<ArtikelPage />} />
-        <Route path="/detail-artikel" element={<DetailArtikel />} />
+        <Route path="/detail-artikel/:id" element={<DetailArtikel />} />
         <Route path="/loginadmin" element={<AdminLogin />} />
         <Route path="/dashboardadmin" element={<AdminDashboard />} />
+        <Route path="/listartikel" element={<ListArtikel />} />
+        <Route path="/postartikel" element={<TambahArtikel />} />
       </Routes>
 
       {/* Footer only if not on login or admin dashboard routes */}
-      {!isLoginAdminRoute && !isMainAdminRoute && <Footer />}
+      {!isLoginAdminRoute && !isMainAdminRoute}
     </>
   );
 }
