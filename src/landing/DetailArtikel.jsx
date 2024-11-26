@@ -79,7 +79,7 @@ const DetailArtikel = () => {
             />
             <div className="p-4">
               <Link
-                to="/artikel/related-1"
+                to="/artikel/"
                 className="text-green-600 font-semibold text-lg hover:underline"
               >
                 Bagaimana Cara Memanfaatkan Lahan yang Terbatas?
@@ -98,7 +98,7 @@ const DetailArtikel = () => {
             />
             <div className="p-4">
               <Link
-                to="/artikel/related-2"
+                to="/artikel/"
                 className="text-green-600 font-semibold text-lg hover:underline"
               >
                 Bagaimana Cara Memanfaatkan Lahan yang Terbatas?
@@ -117,7 +117,7 @@ const DetailArtikel = () => {
             />
             <div className="p-4">
               <Link
-                to="/artikel/related-3"
+                to="/artikel/"
                 className="text-green-600 font-semibold text-lg hover:underline"
               >
                 Bagaimana Cara Memanfaatkan Lahan yang Terbatas?
