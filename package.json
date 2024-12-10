@@ -11,17 +11,24 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
+<<<<<<< HEAD
     "cors": "^2.8.5",
     "express": "^4.21.1",
     "express-fileupload": "^1.5.1",
     "file-saver": "^2.0.5",
     "mysql2": "^3.11.5",
+=======
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.28.0",
+<<<<<<< HEAD
     "swiper": "^11.1.14",
     "xlsx": "^0.18.5"
+=======
+    "swiper": "^11.1.14"
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",

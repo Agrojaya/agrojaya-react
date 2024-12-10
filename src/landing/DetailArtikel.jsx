@@ -79,14 +79,22 @@ const DetailArtikel = () => {
             />
             <div className="p-4">
               <Link
+<<<<<<< HEAD
                 to="/artikel/"
+=======
+                to="/artikel/related-1"
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
                 className="text-green-600 font-semibold text-lg hover:underline"
               >
                 Bagaimana Cara Memanfaatkan Lahan yang Terbatas?
               </Link>
               <p className="text-sm text-gray-500 mt-2">
+<<<<<<< HEAD
                 Urban Farming merupakan teknik yang digunakan oleh masyarakat
                 kota
+=======
+                Urban Farming merupakan teknik yang digunakan oleh masyarakat kota
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
               </p>
             </div>
           </div>
@@ -99,14 +107,22 @@ const DetailArtikel = () => {
             />
             <div className="p-4">
               <Link
+<<<<<<< HEAD
                 to="/artikel/"
+=======
+                to="/artikel/related-2"
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
                 className="text-green-600 font-semibold text-lg hover:underline"
               >
                 Bagaimana Cara Memanfaatkan Lahan yang Terbatas?
               </Link>
               <p className="text-sm text-gray-500 mt-2">
+<<<<<<< HEAD
                 Urban Farming merupakan teknik yang digunakan oleh masyarakat
                 kota
+=======
+                Urban Farming merupakan teknik yang digunakan oleh masyarakat kota
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
               </p>
             </div>
           </div>
@@ -119,14 +135,22 @@ const DetailArtikel = () => {
             />
             <div className="p-4">
               <Link
+<<<<<<< HEAD
                 to="/artikel/"
+=======
+                to="/artikel/related-3"
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
                 className="text-green-600 font-semibold text-lg hover:underline"
               >
                 Bagaimana Cara Memanfaatkan Lahan yang Terbatas?
               </Link>
               <p className="text-sm text-gray-500 mt-2">
+<<<<<<< HEAD
                 Urban Farming merupakan teknik yang digunakan oleh masyarakat
                 kota
+=======
+                Urban Farming merupakan teknik yang digunakan oleh masyarakat kota
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
               </p>
             </div>
           </div>

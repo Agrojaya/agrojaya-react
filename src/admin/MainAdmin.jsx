@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import AdminDashboard from "./dashboard";
 import DaftarPaket from "./daftarpaket";
+<<<<<<< HEAD
 import ListArtikel from "./ListArtikel";
+=======
+import ListArtikel from "./postartikel";
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
 
 const MainAdmin = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
@@ -40,6 +44,7 @@ const MainAdmin = () => {
             onClick={() => setActiveSection("dashboard")}
           >
             <img
+<<<<<<< HEAD
               src={
                 activeSection === "dashboard"
                   ? "src/assets/images/icon-dashboard-2.png"
@@ -51,6 +56,14 @@ const MainAdmin = () => {
             Dashboard
           </button>
 
+=======
+              src="src/assets/images/icon-dashboard.png" // path to your icon image
+              alt="Dashboard Icon"
+              className="w-6 h-6 mr-3"
+            />
+            Dashboard
+          </button>
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
           <button
             className={`flex items-center w-full p-3 ${
               activeSection === "daftarPaket"
@@ -60,11 +73,15 @@ const MainAdmin = () => {
             onClick={() => setActiveSection("daftarPaket")}
           >
             <img
+<<<<<<< HEAD
               src={
                 activeSection === "daftarPaket"
                   ? "src/assets/images/icon-daftarPaket-2.png"
                   : "src/assets/images/icon-daftarPaket.png" // path to your icon image
               }
+=======
+              src="src/assets/images/icon-daftarPaket.png" // path to your icon image
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
               alt="Daftar Paket Icon"
               className="w-6 h-6 mr-3"
             />
@@ -79,11 +96,15 @@ const MainAdmin = () => {
             onClick={() => setActiveSection("listArtikel")}
           >
             <img
+<<<<<<< HEAD
               src={
                 activeSection === "listArtikel"
                   ? "src/assets/images/icon-postArtikel-2.png" // path to your icon image
                   : "src/assets/images/icon-postArtikel.png" // path to your icon image
               }
+=======
+              src="src/assets/images/icon-postArtikel.png" // path to your icon image
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
               alt="List Artikel Icon"
               className="w-6 h-6 mr-3"
             />
@@ -111,7 +132,12 @@ const MainAdmin = () => {
         {renderContent()}
       </main>
     </div>
+<<<<<<< HEAD
   );
+=======
+  )
+  
+>>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
 };
 
 export default MainAdmin;
