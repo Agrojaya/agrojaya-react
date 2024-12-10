@@ -147,7 +147,10 @@ const LandingPage = () => {
       </section>
 
       {/* About Us Section */}
-      <section className="flex items-center justify-center py-10 bg-green-50">
+      <section
+        id="tentangKami"
+        className="flex items-center justify-center py-10 bg-green-50"
+      >
         <div className="flex items-center max-w-3xl p-6">
           {/* Logo */}
           <div className="flex-shrink-0 mr-4">
@@ -254,7 +257,7 @@ const LandingPage = () => {
         </div>
       </section>
       {/* Contact Form Section */}
-      <section className="p-8 bg-green-50">
+      <section id="kontak" className="p-8 bg-green-50">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-semibold text-green-600 text-center mb-6">
             Kontak
@@ -320,7 +323,6 @@ const LandingPage = () => {
                   Kirim
                 </button>
               </form>
-              
             </div>
           </div>
         </div>

@@ -4,6 +4,12 @@ import logo from "../assets/images/logo.png";
 
 function Navbar() {
   const navigate = useNavigate();
+  const handleScroll = (targetId) => {
+    const targetElement = document.getElementById(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full flex items-center justify-between py-2 px-6 bg-white border-b shadow-md z-10">
@@ -30,7 +36,7 @@ function Navbar() {
         </li>
         <li>
           <button
-            onClick={() => navigate("/tentang-kami")}
+            onClick={() => handleScroll("tentangKami")}
             className="hover:text-gray-700 focus:outline-none"
           >
             Tentang Kami
@@ -38,7 +44,7 @@ function Navbar() {
         </li>
         <li>
           <button
-            onClick={() => navigate("/kontak")}
+            onClick={() => handleScroll("kontak")}
             className="hover:text-gray-700 focus:outline-none"
           >
             Kontak
@@ -46,7 +52,7 @@ function Navbar() {
         </li>
       </ul>
       <button
-        onClick={() => navigate("/get-started")}
+        onClick={() => navigate("")}
         className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md ml-4"
       >
         Get Started

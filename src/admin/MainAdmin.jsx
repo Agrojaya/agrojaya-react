@@ -40,12 +40,17 @@ const MainAdmin = () => {
             onClick={() => setActiveSection("dashboard")}
           >
             <img
-              src="src/assets/images/icon-dashboard.png" // path to your icon image
+              src={
+                activeSection === "dashboard"
+                  ? "src/assets/images/icon-dashboard-2.png"
+                  : "src/assets/images/icon-dashboard.png"
+              }
               alt="Dashboard Icon"
-              className="w-6 h-6 mr-3"
+              className="w-6 h-6 mr-3 object-contain"
             />
             Dashboard
           </button>
+
           <button
             className={`flex items-center w-full p-3 ${
               activeSection === "daftarPaket"
@@ -55,7 +60,11 @@ const MainAdmin = () => {
             onClick={() => setActiveSection("daftarPaket")}
           >
             <img
-              src="src/assets/images/icon-daftarPaket.png" // path to your icon image
+              src={
+                activeSection === "daftarPaket"
+                  ? "src/assets/images/icon-daftarPaket-2.png"
+                  : "src/assets/images/icon-daftarPaket.png" // path to your icon image
+              }
               alt="Daftar Paket Icon"
               className="w-6 h-6 mr-3"
             />
@@ -70,7 +79,11 @@ const MainAdmin = () => {
             onClick={() => setActiveSection("listArtikel")}
           >
             <img
-              src="src/assets/images/icon-postArtikel.png" // path to your icon image
+              src={
+                activeSection === "listArtikel"
+                  ? "src/assets/images/icon-postArtikel-2.png" // path to your icon image
+                  : "src/assets/images/icon-postArtikel.png" // path to your icon image
+              }
               alt="List Artikel Icon"
               className="w-6 h-6 mr-3"
             />
@@ -98,8 +111,7 @@ const MainAdmin = () => {
         {renderContent()}
       </main>
     </div>
-  )
-  
+  );
 };
 
 export default MainAdmin;
