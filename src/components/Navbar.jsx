@@ -4,15 +4,12 @@ import logo from "../assets/images/logo.png";
 
 function Navbar() {
   const navigate = useNavigate();
-<<<<<<< HEAD
   const handleScroll = (targetId) => {
     const targetElement = document.getElementById(targetId);
     if (targetElement) {
       targetElement.scrollIntoView({ behavior: "smooth" });
     }
   };
-=======
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
 
   return (
     <nav className="fixed top-0 left-0 w-full flex items-center justify-between py-2 px-6 bg-white border-b shadow-md z-10">
@@ -39,11 +36,7 @@ function Navbar() {
         </li>
         <li>
           <button
-<<<<<<< HEAD
             onClick={() => handleScroll("tentangKami")}
-=======
-            onClick={() => navigate("/tentang-kami")}
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
             className="hover:text-gray-700 focus:outline-none"
           >
             Tentang Kami
@@ -51,11 +44,7 @@ function Navbar() {
         </li>
         <li>
           <button
-<<<<<<< HEAD
             onClick={() => handleScroll("kontak")}
-=======
-            onClick={() => navigate("/kontak")}
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
             className="hover:text-gray-700 focus:outline-none"
           >
             Kontak
@@ -63,11 +52,7 @@ function Navbar() {
         </li>
       </ul>
       <button
-<<<<<<< HEAD
         onClick={() => navigate("")}
-=======
-        onClick={() => navigate("/get-started")}
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
         className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md ml-4"
       >
         Get Started

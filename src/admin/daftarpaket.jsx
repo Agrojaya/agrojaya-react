@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import { FaEllipsisV, FaTrash, FaEdit } from "react-icons/fa";
 import TambahPaket from "./TambahPaket";
-import UbahPaket from "./UbahPaket"; // Import form edit paket
+import UbahPaket from "./UbahPaket";
 
 const DaftarPaket = () => {
   const [packages, setPackages] = useState([]); // State untuk menyimpan data paket
@@ -15,7 +14,7 @@ const DaftarPaket = () => {
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const response = await fetch("http://localhost:3000/data_paket"); // Ganti dengan URL backend
+        const response = await fetch("http://localhost:3000/data_paket");
         const data = await response.json();
         setPackages(data);
       } catch (error) {
@@ -27,82 +26,33 @@ const DaftarPaket = () => {
   }, []);
 
   // Toggle modal tambah paket
-  const toggleTambahPaket = () => {
-    setShowTambahPaket(!showTambahPaket);
-  };
+  const toggleTambahPaket = () => setShowTambahPaket(!showTambahPaket);
 
   // Toggle menu titik tiga
-  const handleMenuToggle = (id) => {
+  const handleMenuToggle = (id) =>
     setActiveMenu((prev) => (prev === id ? null : id));
-  };
 
   // Fungsi untuk membuka form edit
   const handleEdit = (paket) => {
-    setSelectedPaket(paket); // Simpan data paket yang akan diedit
-    setShowUbahPaket(true); // Buka modal ubah paket
-    setActiveMenu(null); // Tutup menu aktif
+    setSelectedPaket(paket);
+    setShowUbahPaket(true);
+    setActiveMenu(null);
   };
 
   // Fungsi untuk menghapus paket
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:3000/data_paket/${id}`, {
-        method: "DELETE",
-      });
-      setPackages(packages.filter((pkg) => pkg.id !== id)); // Hapus data dari state
+      await fetch(`http://localhost:3000/data_paket/${id}`, { method: "DELETE" });
+      setPackages(packages.filter((pkg) => pkg.id !== id));
     } catch (error) {
       console.error("Error deleting package:", error);
     }
   };
 
-=======
-import React from "react";
-import { FaSearch, FaEllipsisV } from "react-icons/fa";
-
-const packages = [
-  {
-    name: "Paket Dasar",
-    description:
-      "Instalasi sederhana untuk kebun vertikal atau hidroponik kecil, termasuk 1-2 variasi tanaman sayuran atau herba, tanpa sistem irigasi",
-    price: "Rp 150.000",
-    image: "https://via.placeholder.com/80", // Replace with your image paths
-  },
-  {
-    name: "Paket Menengah",
-    description:
-      "Instalasi sederhana untuk kebun vertikal atau hidroponik kecil, termasuk 1-2 variasi tanaman sayuran atau herba, tanpa sistem irigasi",
-    price: "Rp 150.000",
-    image: "https://via.placeholder.com/80",
-  },
-  {
-    name: "Paket Lengkap",
-    description:
-      "Instalasi sederhana untuk kebun vertikal atau hidroponik kecil, termasuk 1-2 variasi tanaman sayuran atau herba, tanpa sistem irigasi",
-    price: "Rp 150.000",
-    image: "https://via.placeholder.com/80",
-  },
-  {
-    name: "Paket Premium",
-    description:
-      "Instalasi sederhana untuk kebun vertikal atau hidroponik kecil, termasuk 1-2 variasi tanaman sayuran atau herba, tanpa sistem irigasi",
-    price: "Rp 150.000",
-    image: "https://via.placeholder.com/80",
-  },
-];
-
-const DaftarPaket = () => {
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
   return (
     <div className="flex min-h-screen bg-green-100">
-      {/* Main Content */}
       <main className="flex-1 p-6">
-<<<<<<< HEAD
-        {/* Judul */}
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Daftar Paket</h1>
-
-=======
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
-        {/* Package List Table */}
         <div className="bg-white rounded-lg shadow p-4">
           <table className="w-full">
             <thead>
@@ -111,45 +61,21 @@ const DaftarPaket = () => {
                 <th className="px-4 py-2">Deskripsi</th>
                 <th className="px-4 py-2">Harga</th>
                 <th className="px-4 py-2">Gambar</th>
-<<<<<<< HEAD
                 <th className="px-4 py-2">Aksi</th>
-=======
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
               </tr>
             </thead>
             <tbody>
-              {packages.map((pkg, index) => (
-                <tr
-<<<<<<< HEAD
-                  key={pkg.id}
-=======
-                  key={index}
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
-                  className={`${
-                    index % 2 === 0 ? "bg-green-50" : "bg-green-100"
-                  }`}
-                >
+              {packages.map((pkg) => (
+                <tr key={pkg.id} className="bg-green-50">
                   <td className="px-4 py-2 font-semibold">{pkg.name}</td>
-<<<<<<< HEAD
                   <td className="px-4 py-2 text-gray-700">{pkg.description}</td>
-=======
-                  <td className="px-4 py-2 text-gray-700">
-                    {pkg.description}{" "}
-                    <a href="#" className="text-green-600">
-                      selanjutnya
-                    </a>
-                  </td>
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
                   <td className="px-4 py-2 font-semibold">{pkg.price}</td>
                   <td className="px-4 py-2">
-                    <div className="flex items-center">
-                      <img
-<<<<<<< HEAD
-                        src={pkg.photo}
-                        alt={pkg.name}
-                        className="w-16 h-16 rounded-md object-cover"
-                      />
-                    </div>
+                    <img
+                      src={pkg.photo}
+                      alt={pkg.name}
+                      className="w-16 h-16 rounded-md object-cover"
+                    />
                   </td>
                   <td className="px-4 py-2 relative">
                     <FaEllipsisV
@@ -175,24 +101,12 @@ const DaftarPaket = () => {
                       </div>
                     )}
                   </td>
-=======
-                        src={pkg.image}
-                        alt={pkg.name}
-                        className="w-16 h-16 rounded-md object-cover"
-                      />
-                      <FaEllipsisV className="ml-3 text-gray-600 cursor-pointer" />
-                    </div>
-                  </td>
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-
-        {/* Add Button */}
         <div className="flex justify-end mt-4">
-<<<<<<< HEAD
           <button
             onClick={toggleTambahPaket}
             className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
@@ -212,8 +126,6 @@ const DaftarPaket = () => {
             >
               &times;
             </button>
-
-            {/* Form Tambah Paket */}
             <TambahPaket onClose={toggleTambahPaket} />
           </div>
         </div>
@@ -229,8 +141,6 @@ const DaftarPaket = () => {
             >
               &times;
             </button>
-
-            {/* Form Ubah Paket */}
             <UbahPaket
               paketData={selectedPaket}
               onClose={() => setShowUbahPaket(false)}
@@ -238,13 +148,6 @@ const DaftarPaket = () => {
           </div>
         </div>
       )}
-=======
-          <button className="px-6 py-2 bg-green-600 text-white rounded-lg">
-            Tambah
-          </button>
-        </div>
-      </main>
->>>>>>> b35cfaf46efbfde4b7d980732e2752c78eafd29c
     </div>
   );
 };
