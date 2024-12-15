@@ -101,7 +101,7 @@ const LandingPage = () => {
       </section>
 
       {/* About Us Section */}
-      <section className="flex items-center justify-center py-10 bg-green-50">
+      <section id="tentangKami" className="flex items-center justify-center py-10 bg-green-50">
         <div className="flex items-center max-w-3xl p-6">
           {/* Logo */}
           <div className="flex-shrink-0 mr-4">
