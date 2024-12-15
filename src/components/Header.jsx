@@ -4,7 +4,8 @@ import playStoreButton from "../assets/images/play-store-button.png"; // Replace
 
 function Header() {
   return (
-    <header className="flex items-center justify-between px-20 py-12 bg-gradient-to-r from-green-50 to-gray-100">
+    <header className="flex items-center justify-between px-20 py-12 bg-gradient-to-br from-[#F1FCF1] to-[#BDBDBD]">
+
       <div className="max-w-xl">
         <h1 className="text-5xl font-semibold text-gray-900 mb-6 leading-tight">
           Atur Kebun dan Aktivitas <br /> Anda Lebih Efisien <br /> dengan AgroJaya

@@ -1,156 +1,107 @@
-import daun from "../assets/images/daun.png"; // Replace with actual image path
-import app from "../assets/images/app.png"; // Replace with actual image path
+import app from "../assets/images/app.png";
 import logo from "../assets/images/logo.png";
 import kontak from "../assets/images/kontak.png";
-import { FaLeaf } from "react-icons/fa";
+import ide from "../assets/images/ide.png";
+import service from "../assets/images/service.png";
+import time from "../assets/images/time.png";
+import timee from "../assets/images/timee.png";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css"; // Import Swiper core styles
+import { useEffect, useState } from "react"; 
+import "swiper/css"; 
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaArrowRight } from "react-icons/fa";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const [articles, setArticles] = useState([]);
+
+  // Fetch data when the component mounts
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/artikel");
+        const data = await response.json();
+        setArticles(data); 
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+      }
+    };
+
+    fetchArticles();
+  }, []);
 
   const handleLearnMore = () => {
-    navigate("/detail-artikel"); // Update with the correct route as needed
+    navigate("/artikel/${id}"); 
   };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const data = new FormData(form);
 
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: data,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        console.error("Error submitting form:", response.statusText);
+        window.location.reload(); 
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      window.location.reload(); 
+    }
+  };
   return (
     <div className="font-sans text-gray-700">
-      {/* Hero Section */}
       <section className="p-6 bg-white">
         <Swiper
           spaceBetween={20}
           slidesPerView={2}
           breakpoints={{
-            640: {
-              slidesPerView: 1,
-            },
-            1024: {
-              slidesPerView: 2,
-            },
+            640: { slidesPerView: 1 },
+            1024: { slidesPerView: 2 },
           }}
         >
-          {/* Slide 1 */}
-          <SwiperSlide>
-            <div className="flex items-center p-4 space-x-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-              {/* Image Section */}
-              <img
-                src={daun}
-                alt="Urban Farming"
-                className="object-cover w-1/2 h-full rounded-md"
-              />
+          {articles.map((artikel, index) => (
+            <SwiperSlide key={index}>
+              <div className="flex items-center p-4 space-x-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <img
+                  src={artikel.photo || "/default-daun.jpg"}
+                  alt={artikel.judul || "Image"}
+                  className="object-cover w-2/4 h-full rounded-md"
+                />
 
-              {/* Text Section */}
-              <div className="w-1/2">
-                <h3 className="text-lg font-semibold">
-                  Bagaimana Cara Memanfaatkan Lahan yang Sempit?
-                </h3>
-                <p className="mt-2 text-sm text-gray-600">
-                  Dengan pertumbuhan populasi yang semakin pesat dan urbanisasi
-                  yang terus meningkat, lahan pertanian menjadi semakin langka.
-                  Bagi banyak orang ...
-                </p>
-                <button
-                  onClick={handleLearnMore}
-                  className="flex items-center p-2 mt-4 text-green-600 border border-green-600 rounded-full hover:bg-green-600 hover:text-white transition-colors duration-200"
-                >
-                  <FaArrowRight className="text-xl" />
-                </button>
+                <div className="w-1/2">
+                  <h3 className="text-xl font-semibold ">
+                    {artikel.judul || "Untitled"}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-600 line-clamp-3">
+                    {artikel.isi || "No summary available."}
+                  </p>
+                  <button
+                    onClick={handleLearnMore}
+                    className="p-2 mt-4 text-green-600 border border-green-600 rounded-full hover:bg-green-600 hover:text-white transition-colors"
+                  >
+                    <FaArrowRight className="text-xl" />
+                  </button>
+                </div>
               </div>
-            </div>
-          </SwiperSlide>
-
-          {/* Slide 2 */}
-          <SwiperSlide>
-            <div className="flex items-center p-4 space-x-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-              {/* Image Section */}
-              <img
-                src={daun}
-                alt="Vertical Farming"
-                className="object-cover w-1/2 h-full rounded-md"
-              />
-
-              {/* Text Section */}
-              <div className="w-1/2">
-                <h3 className="text-lg font-semibold">Vertical Farming</h3>
-                <p className="mt-2 text-sm text-gray-600">
-                  Vertical farming is an innovative way to grow crops in urban
-                  areas...
-                </p>
-                <button
-                  onClick={handleLearnMore}
-                  className="flex items-center p-2 mt-4 text-green-600 border border-green-600 rounded-full hover:bg-green-600 hover:text-white transition-colors duration-200"
-                >
-                  <FaArrowRight className="text-xl" />
-                </button>
-              </div>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className="flex items-center p-4 space-x-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-              {/* Image Section */}
-              <img
-                src={daun}
-                alt="Vertical Farming"
-                className="object-cover w-1/2 h-full rounded-md"
-              />
-
-              {/* Text Section */}
-              <div className="w-1/2">
-                <h3 className="text-lg font-semibold">Vertical Farming</h3>
-                <p className="mt-2 text-sm text-gray-600">
-                  Vertical farming is an innovative way to grow crops in urban
-                  areas...
-                </p>
-                <button
-                  onClick={handleLearnMore}
-                  className="flex items-center p-2 mt-4 text-green-600 border border-green-600 rounded-full hover:bg-green-600 hover:text-white transition-colors duration-200"
-                >
-                  <FaArrowRight className="text-xl" />
-                </button>
-              </div>
-            </div>
-          </SwiperSlide>
-
-          <SwiperSlide>
-            <div className="flex items-center p-4 space-x-4 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
-              {/* Image Section */}
-              <img
-                src={daun}
-                alt="Vertical Farming"
-                className="object-cover w-1/2 h-full rounded-md"
-              />
-
-              {/* Text Section */}
-              <div className="w-1/2">
-                <h3 className="text-lg font-semibold">Vertical Farming</h3>
-                <p className="mt-2 text-sm text-gray-600">
-                  Vertical farming is an innovative way to grow crops in urban
-                  areas...
-                </p>
-                <button
-                  onClick={handleLearnMore}
-                  className="flex items-center p-2 mt-4 text-green-600 border border-green-600 rounded-full hover:bg-green-600 hover:text-white transition-colors duration-200"
-                >
-                  <FaArrowRight className="text-xl" />
-                </button>
-              </div>
-            </div>
-          </SwiperSlide>
-
-          {/* Add more SwiperSlides as needed */}
+            </SwiperSlide>
+          ))}
         </Swiper>
       </section>
 
       {/* About Us Section */}
-      <section
-        id="tentangKami"
-        className="flex items-center justify-center py-10 bg-green-50"
-      >
+      <section className="flex items-center justify-center py-10 bg-green-50">
         <div className="flex items-center max-w-3xl p-6">
           {/* Logo */}
           <div className="flex-shrink-0 mr-4">
@@ -173,89 +124,82 @@ const LandingPage = () => {
       </section>
 
       <section className="p-8 space-y-8 bg-white">
-        {/* Feature 1 */}
-        <div className="flex flex-col items-center md:flex-row md:space-x-4 bg-white p-6 rounded-md shadow-lg">
-          <div className="w-full md:w-1/2">
-            <h5 className="text-green-600 text-sm font-bold bg-green-100 py-1 px-3 inline-block rounded-md mb-2">
-              ABOUT APP
-            </h5>
-            <h3 className="text-xl font-semibold">
-              Urban Farming: Ciptakan Kebun Sehat di Rumahmu!
-            </h3>
-            <p className="mt-2 text-sm text-gray-600">
-              Ubah ruang kosong di rumah menjadi kebun hijau dengan layanan
-              urban farming kami! Mulai dari desain yang sesuai kebutuhan,
-              instalasi, hingga perawatan awal, kami siap membantu Anda
-              menciptakan kebun hidroponik, vertikal farming, atau taman sayur
-              di balkon.
-            </p>
-            <div className="flex items-center mt-4 space-x-8">
-              <div className="flex items-center space-x-2">
-                <FaLeaf className="text-green-600" />
-                <div>
-                  <span className="font-semibold">Collaboration</span>
-                  <p className="text-sm text-gray-500">
-                    Memungkinkan pengguna untuk berkolaborasi
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <FaLeaf className="text-green-600" />
-                <div>
-                  <span className="font-semibold">Service</span>
-                  <p className="text-sm text-gray-500">
-                    Menyediakan berbagai layanan mulai dari konsultasi
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="w-full mt-4 md:mt-0 md:w-1/2">
-            <img src={app} alt="Feature" className="rounded-md shadow-lg" />
-          </div>
-        </div>
-
-        {/* Feature 2 */}
-        <div className="flex flex-col items-center md:flex-row-reverse md:space-x-4 bg-gray-100 p-6 rounded-md shadow-lg">
-          <div className="w-full md:w-1/2">
-            <h5 className="text-green-600 text-sm font-bold bg-green-100 py-1 px-3 inline-block rounded-md mb-2">
-              ABOUT APP
-            </h5>
-            <h3 className="text-xl font-semibold">
-              Tanaman tumbuh maksimal, usaha minimal!
-            </h3>
-            <p className="mt-2 text-sm text-gray-600">
-              Fitur reminder ini hadir untuk memastikan tanaman Anda selalu
-              terjaga dan tumbuh sehat, bahkan di tengah jadwal padat Anda.
-              Kini, siapa pun bisa memiliki kebun hijau di rumah, tanpa khawatir
-              perawatan terlupakan.
-            </p>
-            <div className="flex items-center mt-4 space-x-8">
-              <div className="flex items-center space-x-2">
-                <FaLeaf className="text-green-600" />
-                <div>
-                  <span className="font-semibold">Ease of Use</span>
-                  <p className="text-sm text-gray-500">
-                    Menyederhanakan pengalaman pengguna
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-2">
-                <FaLeaf className="text-green-600" />
-                <div>
-                  <span className="font-semibold">Time Management</span>
-                  <p className="text-sm text-gray-500">
-                    Memungkinkan pengguna untuk membuat jadwal harian
-                  </p>
-                </div>
+        {/** Feature Sections */}
+        {[
+          {
+            id: 1,
+            title: "Urban Farming: Ciptakan Kebun Sehat di Rumahmu!",
+            description:
+              "Ubah ruang kosong di rumah menjadi kebun hijau dengan layanan urban farming kami! Mulai dari desain yang sesuai kebutuhan, instalasi, hingga perawatan awal, kami siap membantu Anda menciptakan kebun hidroponik, vertikal farming, atau taman sayur di balkon.",
+            features: [
+              {
+                icon: ide,
+                title: "Collaboration",
+                description: "Memungkinkan pengguna untuk berkolaborasi",
+              },
+              {
+                icon: service,
+                title: "Service",
+                description:
+                  "Menyediakan berbagai layanan mulai dari konsultasi",
+              },
+            ],
+            image: app,
+            reverse: false,
+          },
+          {
+            id: 2,
+            title: "Tanaman tumbuh maksimal, usaha minimal!",
+            description:
+              "Fitur reminder ini hadir untuk memastikan tanaman Anda selalu terjaga dan tumbuh sehat, bahkan di tengah jadwal padat Anda. Kini, siapa pun bisa memiliki kebun hijau di rumah, tanpa khawatir perawatan terlupakan.",
+            features: [
+              {
+                icon: time,
+                title: "Time Management",
+                description:
+                  "Memungkinkan pengguna untuk membuat jadwal harian",
+              },
+            ],
+            image: timee,
+            reverse: true,
+          },
+        ].map(({ id, title, description, features, image, reverse }) => (
+          <div
+            key={id}
+            className={`flex flex-col items-center md:flex-row${
+              reverse ? "-reverse" : ""
+            } md:space-x-4 p-6`}
+          >
+            <div className="w-full md:w-1/2">
+              <h5 className="text-white text-sm font-bold bg-green-600 py-1 px-3 inline-block rounded-md mb-2">
+                ABOUT APP
+              </h5>
+              <h3 className="text-3xl font-semibold">{title}</h3>
+              <p className="mt-2 text-sm text-gray-600">{description}</p>
+              <hr className="my-4 border-t border-gray-700" /> 
+              <div className="flex items-center mt-4 space-x-8">
+                {features.map(({ icon, title, description }, idx) => (
+                  <div key={idx} className="flex flex-col items-left text-left">
+                    {typeof icon === "string" ? (
+                      <img src={icon} height="50" width="50" alt={title} />
+                    ) : (
+                      icon
+                    )}
+                    <div>
+                      <span className="font-semibold">{title}</span>
+                      <p className="text-sm text-gray-500">{description}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
+            <div className="w-full mt-4 md:mt-0 md:w-1/2">
+              <img src={image} alt="Feature" />
+            </div>
           </div>
-          <div className="w-full mt-4 md:mt-0 md:w-1/2">
-            <img src={app} alt="Feature" className="rounded-md shadow-lg" />
-          </div>
-        </div>
+        ))}
       </section>
+
       {/* Contact Form Section */}
       <section id="kontak" className="p-8 bg-green-50">
         <div className="max-w-4xl mx-auto">
@@ -266,14 +210,20 @@ const LandingPage = () => {
             {/* Image */}
             <div className="flex-shrink-0">
               <img
-                src={kontak} // Ganti dengan path gambar Anda
+                src={kontak} 
                 alt="Contact"
                 className="rounded-md shadow-lg w-full md:w-[300px] h-auto"
               />
             </div>
             {/* Form */}
             <div className="flex-grow">
-              <form className="bg-white p-6 rounded-lg shadow-md">
+              <form
+                className="p-6 "
+                id="my-form"
+                action="https://formspree.io/f/mgvwvyoy"
+                method="POST"
+                onSubmit={handleSubmit}
+              >
                 <div className="mb-4">
                   <label
                     htmlFor="name"
@@ -318,7 +268,7 @@ const LandingPage = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors duration-200"
+                  className="w-1/3 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors duration-200"
                 >
                   Kirim
                 </button>
