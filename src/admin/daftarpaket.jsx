@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { FaEllipsisV, FaTrash, FaEdit } from "react-icons/fa";
 import TambahPaket from "./TambahPaket";
@@ -58,8 +59,10 @@ const DaftarPaket = () => {
             <thead>
               <tr className="bg-green-600 text-white">
                 <th className="px-4 py-2">Nama</th>
-                <th className="px-4 py-2">Deskripsi</th>
+                <th className="px-4 py-2">Detail produk</th>
                 <th className="px-4 py-2">Harga</th>
+                <th className="px-4 py-2">Variasi Bibit</th>
+                <th className="px-4 py-2">Fitur</th>
                 <th className="px-4 py-2">Gambar</th>
                 <th className="px-4 py-2">Aksi</th>
               </tr>
@@ -68,8 +71,10 @@ const DaftarPaket = () => {
               {packages.map((pkg) => (
                 <tr key={pkg.id} className="bg-green-50">
                   <td className="px-4 py-2 font-semibold">{pkg.name}</td>
-                  <td className="px-4 py-2 text-gray-700">{pkg.description}</td>
-                  <td className="px-4 py-2 font-semibold">{pkg.price}</td>
+                  <td className="px-4 py-2 text-gray-700">{pkg.detail}</td>
+                  <td className="px-4 py-2 font-semibold">{pkg.harga}</td>
+                  <td className="px-4 py-2 text-gray-700">{pkg.variasi_bibit}</td>
+                  <td className="px-4 py-2 text-gray-700">{pkg.fitur}</td>
                   <td className="px-4 py-2">
                     <img
                       src={pkg.photo}
