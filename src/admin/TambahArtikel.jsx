@@ -29,6 +29,12 @@ const TambahArtikel = ({ onClose }) => {
     }
   };
 
+  // Fungsi untuk mengubah format tanggal menjadi DD, MM, YYYY
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${day}, ${month}, ${year}`;
+  };
+
   const handleSimpan = async () => {
     if (isSubmitting) return;
     if (!judul || !penulis || !tanggal || !isi || !photo) {
@@ -36,10 +42,13 @@ const TambahArtikel = ({ onClose }) => {
       return;
     }
 
+    // Format tanggal sebelum dikirim
+    const formattedDate = formatDate(tanggal);
+
     const formData = new FormData();
     formData.append("judul", judul);
     formData.append("penulis", penulis);
-    formData.append("tanggal", tanggal);
+    formData.append("tanggal", formattedDate); // Tanggal sudah diformat menjadi DD, MM, YYYY
     formData.append("isi", isi);
     formData.append("photo", photo);
 

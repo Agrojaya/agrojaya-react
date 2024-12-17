@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaEllipsisV, FaTrash, FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom"; // Import Link untuk navigasi
 import TambahArtikel from "./TambahArtikel";
 import UbahArtikel from "./UbahArtikel"; // Import form edit artikel
 
@@ -25,6 +26,20 @@ const ListArtikel = () => {
     fetchArticles();
   }, []);
 
+  // Fungsi untuk format tanggal
+  const formatTanggal = (tanggal) => {
+    const parsedDate = new Date(tanggal);
+    // Periksa apakah tanggal valid
+    if (isNaN(parsedDate)) {
+      return "Tanggal tidak valid"; // Menampilkan pesan fallback jika tanggal tidak valid
+    }
+    return parsedDate.toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
   // Toggle modal tambah artikel
   const toggleTambahArtikel = () => {
     setShowTambahArtikel(!showTambahArtikel);
@@ -37,7 +52,6 @@ const ListArtikel = () => {
 
   // Fungsi untuk membuka form edit
   const handleEdit = (artikel) => {
-    console.log("Editing article:", artikel); // Tambahkan log ini
     setSelectedArtikel(artikel); // Simpan data artikel yang akan diedit
     setShowUbahArtikel(true); // Buka modal ubah artikel
     setActiveMenu(null); // Tutup menu aktif
@@ -85,10 +99,17 @@ const ListArtikel = () => {
                     index % 2 === 0 ? "bg-green-50" : "bg-green-100"
                   }`}
                 >
-                  <td className="px-4 py-2 font-semibold">{artikel.judul}</td>
+                  <td className="px-4 py-2 font-semibold">
+                    <Link
+                      to={`/artikel/${artikel.id}`} // Link ke detail artikel
+                      className="text-blue-600 hover:text-blue-800"
+                    >
+                      {artikel.judul}
+                    </Link>
+                  </td>
                   <td className="px-4 py-2 text-gray-700">{artikel.penulis}</td>
                   <td className="px-4 py-2 text-gray-700">
-                    {new Date(artikel.tanggal).toLocaleDateString()}
+                    {formatTanggal(artikel.tanggal)}
                   </td>
                   <td className="px-4 py-2 text-gray-700">{artikel.isi}</td>
                   <td className="px-4 py-2">
@@ -138,6 +159,7 @@ const ListArtikel = () => {
           </button>
         </div>
       </main>
+
       {/* Modal Tambah Artikel */}
       {showTambahArtikel && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
@@ -154,6 +176,7 @@ const ListArtikel = () => {
           </div>
         </div>
       )}
+
       {/* Modal Ubah Artikel */}
       {showUbahArtikel && selectedArtikel && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
@@ -172,7 +195,7 @@ const ListArtikel = () => {
             />
           </div>
         </div>
-      )}{" "}
+      )}
     </div>
   );
 };

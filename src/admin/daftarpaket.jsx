@@ -1,29 +1,28 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { FaEllipsisV, FaTrash, FaEdit } from "react-icons/fa";
 import TambahPaket from "./TambahPaket";
 import UbahPaket from "./UbahPaket";
 
 const DaftarPaket = () => {
-  const [packages, setPackages] = useState([]); // State untuk menyimpan data paket
-  const [showTambahPaket, setShowTambahPaket] = useState(false); // State untuk modal tambah paket
-  const [showUbahPaket, setShowUbahPaket] = useState(false); // State untuk modal ubah paket
-  const [activeMenu, setActiveMenu] = useState(null); // State untuk menyimpan ID menu aktif
+  const [paket, setPaket] = useState([]); // State untuk menyimpan data paket
+  const [showTambahPaket, setShowTambahPaket] = useState(false); // State modal tambah
+  const [showUbahPaket, setShowUbahPaket] = useState(false); // State modal ubah
+  const [activeMenu, setActiveMenu] = useState(null); // Untuk menyimpan menu aktif
   const [selectedPaket, setSelectedPaket] = useState(null); // Paket yang dipilih untuk diedit
 
   // Fetch data paket dari backend
   useEffect(() => {
-    const fetchPackages = async () => {
+    const fetchPaket = async () => {
       try {
         const response = await fetch("http://localhost:3000/data_paket");
         const data = await response.json();
-        setPackages(data);
+        setPaket(data);
       } catch (error) {
         console.error("Error fetching packages:", error);
       }
     };
 
-    fetchPackages();
+    fetchPaket();
   }, []);
 
   // Toggle modal tambah paket
@@ -33,18 +32,20 @@ const DaftarPaket = () => {
   const handleMenuToggle = (id) =>
     setActiveMenu((prev) => (prev === id ? null : id));
 
-  // Fungsi untuk membuka form edit
-  const handleEdit = (paket) => {
-    setSelectedPaket(paket);
+  // Fungsi edit paket
+  const handleEdit = (pkg) => {
+    setSelectedPaket(pkg);
     setShowUbahPaket(true);
     setActiveMenu(null);
   };
 
-  // Fungsi untuk menghapus paket
+  // Fungsi hapus paket
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:3000/data_paket/${id}`, { method: "DELETE" });
-      setPackages(packages.filter((pkg) => pkg.id !== id));
+      await fetch(`http://localhost:3000/data_paket/${id}`, {
+        method: "DELETE",
+      });
+      setPaket(paket.filter((pkg) => pkg.id !== id));
     } catch (error) {
       console.error("Error deleting package:", error);
     }
@@ -58,28 +59,34 @@ const DaftarPaket = () => {
           <table className="w-full">
             <thead>
               <tr className="bg-green-600 text-white">
-                <th className="px-4 py-2">Nama</th>
-                <th className="px-4 py-2">Detail produk</th>
+                <th className="px-4 py-2">Nama Paket</th>
                 <th className="px-4 py-2">Harga</th>
                 <th className="px-4 py-2">Variasi Bibit</th>
                 <th className="px-4 py-2">Fitur</th>
+                <th className="px-4 py-2">Detail Produk</th>
                 <th className="px-4 py-2">Gambar</th>
                 <th className="px-4 py-2">Aksi</th>
               </tr>
             </thead>
             <tbody>
-              {packages.map((pkg) => (
-                <tr key={pkg.id} className="bg-green-50">
-                  <td className="px-4 py-2 font-semibold">{pkg.name}</td>
-                  <td className="px-4 py-2 text-gray-700">{pkg.detail}</td>
-                  <td className="px-4 py-2 font-semibold">{pkg.harga}</td>
-                  <td className="px-4 py-2 text-gray-700">{pkg.variasi_bibit}</td>
-                  <td className="px-4 py-2 text-gray-700">{pkg.fitur}</td>
+              {paket.map((pkg) => (
+                <tr key={pkg.id} className="bg-green-50 hover:bg-green-200">
+                  <td className="px-4 py-2 font-semibold">{pkg.nama_paket}</td>
+                  <td className="px-4 py-2 font-semibold">
+                    Rp {Number(pkg.harga).toLocaleString()}
+                  </td>
+                  <td className="px-4 py-2">{pkg.variasi_bibit}</td>
+                  <td className="px-4 py-2">{pkg.fitur}</td>
+                  <td className="px-4 py-2">{pkg.detail}</td>
                   <td className="px-4 py-2">
                     <img
                       src={pkg.photo}
-                      alt={pkg.name}
+                      alt={pkg.nama_paket}
                       className="w-16 h-16 rounded-md object-cover"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/fallback-image.png"; // Jika gambar gagal dimuat
+                      }}
                     />
                   </td>
                   <td className="px-4 py-2 relative">
@@ -90,14 +97,14 @@ const DaftarPaket = () => {
                     {activeMenu === pkg.id && (
                       <div className="absolute right-0 top-6 bg-white border rounded-lg shadow-lg w-24">
                         <button
-                          className="flex items-center w-full px-4 py-2 text-gray-700 hover:bg-gray-100"
+                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100"
                           onClick={() => handleEdit(pkg)}
                         >
                           <FaEdit className="mr-2" />
                           Edit
                         </button>
                         <button
-                          className="flex items-center w-full px-4 py-2 text-red-600 hover:bg-gray-100"
+                          className="flex items-center px-4 py-2 text-red-600 hover:bg-gray-100"
                           onClick={() => handleDelete(pkg.id)}
                         >
                           <FaTrash className="mr-2" />

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import artikelImage from "../assets/images/artikel-image.png"; // Replace with your actual image path
-import profile from "../assets/images/profil.png";
+import artikelImage from "../assets/images/artikel-image.png"; // Ganti dengan path gambar yang sesuai
+import profile from "../assets/images/profil.png"; // Ganti dengan path foto penulis
 
 const DetailArtikel = () => {
   const { id } = useParams(); // Ambil ID dari URL
@@ -26,8 +26,20 @@ const DetailArtikel = () => {
       }
     };
 
-    fetchArticle();
+    if (id) {
+      fetchArticle();
+    }
   }, [id]);
+
+  // Fungsi untuk format tanggal menjadi format yang diinginkan
+  const formatTanggal = (tanggal) => {
+    if (!tanggal || isNaN(new Date(tanggal))) return "Tanggal tidak valid";
+    return new Date(tanggal).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
 
   if (loading) {
     return <p className="text-center mt-16">Loading article...</p>;
@@ -68,11 +80,7 @@ const DetailArtikel = () => {
             {article.penulis || "Unknown Author"}
           </p>
           <p className="text-gray-500 text-sm">
-            {new Date(article.tanggal).toLocaleDateString("id-ID", {
-              day: "numeric",
-              month: "long",
-              year: "numeric",
-            })}
+            {formatTanggal(article.tanggal)}
           </p>
         </div>
       </div>
