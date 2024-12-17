@@ -11,27 +11,24 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage(""); // Clear any previous error
-
+    if (!email || !password) {
+      setErrorMessage("Email and password are required");
+      return;
+    }
+    
     try {
-      // Mengirim permintaan POST ke backend untuk login admin
       const response = await axios.post("http://localhost:3000/loginadmin", {
         email,
         password,
       });
-
-      // Jika login berhasil, simpan token ke localStorage
+  
       if (response.data.accessToken) {
         localStorage.setItem("authToken", response.data.accessToken);
-
-        // Redirect ke halaman dashboard admin
         navigate("/dashboardadmin");
       }
     } catch (error) {
-      // Menangani error jika login gagal
-      setErrorMessage(
-        error.response?.data?.msg ||
-          "Login gagal. Periksa email atau kata sandi."
-      );
+      console.error("Login failed:", error); // Log error to console
+      setErrorMessage(error.response?.data?.msg || "Login failed. Check email or password.");
     }
   };
 

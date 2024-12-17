@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaSearch, FaPrint } from "react-icons/fa";
+import { FaPrint, FaSearch } from "react-icons/fa";
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
@@ -12,7 +12,7 @@ const TransactionList = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/transaksi"); // Ganti URL API sesuai dengan backend
+        const response = await fetch("http://localhost:3000/transaksis"); // Ganti URL API sesuai dengan backend
         if (!response.ok) {
           throw new Error("Gagal memuat data transaksi");
         }
