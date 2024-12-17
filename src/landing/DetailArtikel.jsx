@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import artikelImage from "../assets/images/artikel-image.png"; // Ganti dengan path gambar yang sesuai
 import profile from "../assets/images/profil.png"; // Ganti dengan path foto penulis
 
@@ -13,7 +13,7 @@ const DetailArtikel = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/artikel/${id}`);
+        const response = await fetch(`http://localhost:3000/artikel/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch article");
         }
