@@ -1,47 +1,43 @@
 import axios from "axios";
+import { saveAs } from "file-saver";
 import React, { useEffect, useState } from "react";
 import { FaPrint, FaSearch } from "react-icons/fa";
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
 import { useNavigate } from "react-router-dom";
+import * as XLSX from "xlsx";
 
-const AdminDashboard = ({ activeSection = "dashboard" }) => {
-  const [activities, setActivities] = useState([]);
+const AdminDashboard = () => {
   const [transactions, setTransactions] = useState([]);
   const [admin, setAdmin] = useState({ username: "" });
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetch data saat komponen dimuat
+  // Fungsi untuk mengecek token
+  const checkAuthToken = async () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("Anda harus login terlebih dahulu.");
+      navigate("/loginadmin");
+      return false;
+    }
+    return true;
+  };
+
+  // Fetch data transaksi
   useEffect(() => {
     const fetchData = async () => {
+      if (!(await checkAuthToken())) return;
+
       try {
-        const token = localStorage.getItem("authToken");
-        if (!token) {
-          alert("Token tidak ditemukan, silakan login kembali.");
-          navigate("/login");
-          return;
-        }
-
         setLoading(true);
-
+        const token = localStorage.getItem("authToken");
         const headers = { Authorization: `Bearer ${token}` };
 
-        const [activityRes, transactionRes, adminRes] = await Promise.all([
-          axios.get("http://localhost:3000/activities", { headers }),
-          axios.get("http://localhost:3000/transaksi", { headers }),
-          axios.get("http://localhost:3000/loginadmin", { headers }),
-        ]);
-
-        setActivities(activityRes.data.activities || []);
-        setTransactions(transactionRes.data.transaksi || []); // Perbaikan nama properti
-        setAdmin(adminRes.data.admin || { username: "" });
+        const response = await axios.get("http://localhost:3000/transaksis", { headers });
+        setTransactions(response.data || []);
+        setAdmin({ username: "Admin" }); // Gantilah dengan fetch data admin jika ada endpoint
       } catch (error) {
-        console.error("Error fetching data:", error);
-        alert(
-          error.response?.data?.message || "Gagal memuat data, silakan coba lagi."
-        );
+        console.error("Gagal memuat data transaksi:", error);
       } finally {
         setLoading(false);
       }
@@ -50,7 +46,7 @@ const AdminDashboard = ({ activeSection = "dashboard" }) => {
     fetchData();
   }, [navigate]);
 
-  // Export Data ke Excel
+  // Fungsi Export ke Excel
   const handleExportToExcel = () => {
     if (transactions.length === 0) {
       alert("Tidak ada transaksi untuk diekspor.");
@@ -69,129 +65,88 @@ const AdminDashboard = ({ activeSection = "dashboard" }) => {
     saveAs(data, "transaksi.xlsx");
   };
 
-  // Filter Transaksi Berdasarkan Pencarian
+  // Filter Transaksi
   const filteredTransactions = transactions.filter((transaction) => {
     const searchLower = searchTerm.toLowerCase();
     return (
-      transaction.username?.toLowerCase().includes(searchLower) ||
-      transaction.invoice_number?.toLowerCase().includes(searchLower) ||
-      transaction.package_name?.toLowerCase().includes(searchLower)
+      transaction.order_id?.toLowerCase().includes(searchLower) ||
+      transaction.uid?.toLowerCase().includes(searchLower) ||
+      transaction.paket_id?.toString().includes(searchLower) ||
+      transaction.status_pembayaran?.toLowerCase().includes(searchLower) ||
+      transaction.status_transaksi?.toLowerCase().includes(searchLower)
     );
   });
 
   if (loading) {
-    return <div className="text-center py-10">Loading data...</div>;
+    return <div className="text-center py-10">Memuat data...</div>;
   }
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Welcome Card */}
+      {/* Selamat Datang */}
       <div className="bg-white rounded-lg shadow p-4 mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">
-          {`Selamat Datang, ${admin.username}!`}
-        </h2>
+        <h2 className="text-2xl font-bold">{`Selamat Datang, ${admin.username}!`}</h2>
       </div>
 
-      {/* Main Dashboard */}
-      <div className="grid grid-cols-3 gap-6">
-        {/* Aktivitas Section */}
-        <div className="col-span-1 bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-lg font-bold mb-4">Aktivitas</h3>
-          <ul>
-            {activities.length > 0 ? (
-              activities.map((activity) => (
-                <li key={activity.id} className="flex items-center mb-4">
-                  <img
-                    src="src/assets/images/pp.png"
-                    alt="User"
-                    className="w-8 h-8 rounded-full mr-3"
-                  />
-                  <div>
-                    <p className="text-gray-800 font-semibold">
-                      {activity.username || "Unknown User"}
-                    </p>
-                    <p className="text-gray-500 text-sm">
-                      {activity.action || "No Action"}
-                    </p>
-                  </div>
-                </li>
+      {/* Daftar Transaksi */}
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <div className="flex justify-between mb-4">
+          <h3 className="font-bold text-lg">Daftar Transaksi</h3>
+          <div className="flex items-center space-x-2">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Cari Transaksi"
+                className="p-2 pl-10 border rounded-full focus:outline-none"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <FaSearch className="absolute left-3 top-3 text-gray-400" />
+            </div>
+            <button
+              className="p-2 bg-green-600 text-white rounded-md"
+              onClick={handleExportToExcel}
+            >
+              <FaPrint /> Export
+            </button>
+          </div>
+        </div>
+
+        {/* Tabel Transaksi */}
+        <table className="w-full border">
+          <thead>
+            <tr className="bg-green-600 text-white">
+              <th className="p-2">Order ID</th>
+              <th className="p-2">User ID</th>
+              <th className="p-2">Paket</th>
+              <th className="p-2">Total Harga</th>
+              <th className="p-2">Tanggal</th>
+              <th className="p-2">Status Pembayaran</th>
+              <th className="p-2">Status Transaksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredTransactions.length ? (
+              filteredTransactions.map((trx) => (
+                <tr key={trx.id} className="border-b">
+                  <td className="p-2">{trx.order_id}</td>
+                  <td className="p-2">{trx.uid}</td>
+                  <td className="p-2">{trx.paket_id}</td>
+                  <td className="p-2">Rp {trx.total_harga}</td>
+                  <td className="p-2">{trx.tanggal}</td>
+                  <td className="p-2">{trx.status_pembayaran}</td>
+                  <td className="p-2">{trx.status_transaksi}</td>
+                </tr>
               ))
             ) : (
-              <p className="text-gray-500">Tidak ada aktivitas.</p>
+              <tr>
+                <td colSpan="7" className="text-center py-4">
+                  Tidak ada transaksi ditemukan.
+                </td>
+              </tr>
             )}
-          </ul>
-        </div>
-
-        {/* Transaksi Section */}
-        <div className="col-span-2 bg-white rounded-lg shadow-lg p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold">Daftar Transaksi</h3>
-            <div className="flex items-center space-x-2">
-              {/* Search Bar */}
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Cari Transaksi"
-                  className="p-2 pl-10 border rounded-full focus:outline-none"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-              {/* Export Button */}
-              <button
-                className="p-2 bg-green-600 text-white rounded-md"
-                onClick={handleExportToExcel}
-              >
-                <FaPrint />
-              </button>
-            </div>
-          </div>
-
-          {/* Transactions Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border">
-              <thead>
-                <tr className="bg-green-600 text-white">
-                  <th className="px-4 py-2">Invoice</th>
-                  <th className="px-4 py-2">User</th>
-                  <th className="px-4 py-2">Paket</th>
-                  <th className="px-4 py-2">Harga</th>
-                  <th className="px-4 py-2">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredTransactions.length > 0 ? (
-                  filteredTransactions.map((transaction) => (
-                    <tr key={transaction.id} className="border-b">
-                      <td className="px-4 py-2">
-                        {transaction.invoice_number || "N/A"}
-                      </td>
-                      <td className="px-4 py-2">
-                        {transaction.username || "N/A"}
-                      </td>
-                      <td className="px-4 py-2">
-                        {transaction.package_name || "N/A"}
-                      </td>
-                      <td className="px-4 py-2">
-                        Rp {transaction.price || "0"}
-                      </td>
-                      <td className="px-4 py-2 text-green-600">
-                        {transaction.status || "N/A"}
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="text-center text-gray-500 py-4">
-                      Tidak ada transaksi ditemukan.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
     </div>
   );
