@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import artikelImage from "../assets/images/artikel-image.png"; // Ganti dengan path gambar yang sesuai
 import profile from "../assets/images/profil.png"; // Ganti dengan path foto penulis
 
@@ -56,93 +57,117 @@ const DetailArtikel = () => {
   }
 
   return (
-    <div
-      style={{
-        padding: "16px",
-        marginTop: "84px",
-      }}
-      className="font-sans text-gray-800"
-    >
-      {/* Title Section */}
-      <h1 className="text-6xl font-bold text-left mb-8">
-        {article.judul || "Untitled Article"}
-      </h1>
+    <div className="min-h-screen flex flex-col font-sans text-gray-800 ">
+      {/* Kontainer Utama */}
+      <div className="flex-grow px-4 py-8 mt-16 mx-auto max-w-screen-xl">
+        {/* Title Section */}
+        <h1 className="text-6xl font-bold text-left mb-8">
+          {article.judul || "Untitled Article"}
+        </h1>
 
-      {/* Author Section */}
-      <div className="flex items-center justify-start mb-6">
-        <img
-          src={article.penulisPhoto || profile} // URL foto penulis jika ada
-          alt={article.penulis || "Author"}
-          className="w-10 h-10 rounded-full mr-3"
-        />
-        <div>
-          <p className="text-lg font-semibold">
-            {article.penulis || "Unknown Author"}
-          </p>
-          <p className="text-gray-500 text-sm">
-            {formatTanggal(article.tanggal)}
+        {/* Author Section */}
+        <div className="flex items-center justify-start mb-6">
+          <img
+            src={article.penulisPhoto || profile}
+            alt={article.penulis || "Author"}
+            className="w-10 h-10 rounded-full mr-3"
+          />
+          <div>
+            <p className="text-lg font-semibold">
+              {article.penulis || "Unknown Author"}
+            </p>
+            <p className="text-gray-500 text-sm">
+              {formatTanggal(article.tanggal)}
+            </p>
+          </div>
+        </div>
+
+        {/* Hero Image */}
+        <div className="w-full mb-8">
+          <img
+            src={article.photo || artikelImage}
+            alt={article.judul || "Hero"}
+            className="rounded-lg w-auto"
+          />
+        </div>
+
+        {/* Article Content Section */}
+        <div className="mt-10">
+          <p className="text-lg leading-relaxed mb-4">
+            {article.isi || "Tidak ada konten."}
           </p>
         </div>
-      </div>
 
-      {/* Hero Image */}
-      <div className="w-full mb-8">
-        <img
-          src={article.photo || artikelImage}
-          alt={article.judul || "Hero"}
-          className="w-full h-auto rounded-lg"
-        />
-      </div>
+        <div className="mt-4 text-left">
+          <p className="text-green-600 font-semibold mb-2">Bagikan Modul Ini</p>
 
-      {/* Article Content Section */}
-      <div className="mt-10">
-        <p className="text-lg leading-relaxed mb-4">
-          {article.isi || "Tidak ada konten."}
-        </p>
-      </div>
 
-      {/* Related Articles Section */}
-      <div className="mt-10">
-        <h3 className="text-xl font-semibold mb-6">Artikel Lainnya</h3>
-        {article.relatedArticles?.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {article.relatedArticles.map((related) => (
-              <div
-                key={related.id}
-                className="relative bg-white shadow rounded-lg overflow-hidden"
-              >
-                <img
-                  src={related.photo || artikelImage}
-                  alt={related.judul || "Related Article"}
-                  className="w-full h-40 object-cover"
-                />
-                <div className="p-4">
-                  <Link
-                    to={`/artikel/${related.id}`}
-                    className="text-green-600 font-semibold text-lg hover:underline"
-                  >
-                    {related.judul || "Untitled Article"}
-                  </Link>
-                  <p className="text-sm text-gray-500 mt-2">
-                    {related.summary || "No summary available"}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div className="flex justify-left space-x-4">
+
+            <a href="#" className="text-blue-500 hover:text-blue-700">
+              <i className="fab fa-facebook fa-2x"></i>
+            </a>
+
+            <a href="#" className="text-gray-500 hover:text-gray-700">
+              <i className="fab fa-x-twitter fa-2x"></i>
+            </a>
+
+            <a href="#" className="text-blue-600 hover:text-blue-800">
+              <i className="fab fa-linkedin fa-2x"></i>
+            </a>
+
+            <a href="#" className="text-green-500 hover:text-green-700">
+              <i className="fas fa-envelope fa-2x"></i>
+            </a>
           </div>
-        ) : (
-          <p className="text-gray-500">
-            Tidak ada artikel lain yang ditemukan.
-          </p>
-        )}
-      </div>
+        </div>
 
-      {/* Back to Articles Link */}
-      <div className="mt-8 text-center">
-        <Link to="/artikel" className="text-green-600 hover:underline">
-          Kembali ke Artikel
-        </Link>
+        <hr className="my-4 border-t border-gray-700" />
+
+        {/* Related Articles Section */}
+        <div className="mt-10">
+          <h3 className="text-xl font-semibold mb-6">Artikel Lainnya</h3>
+          {article.relatedArticles?.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {article.relatedArticles.map((related) => (
+                <div
+                  key={related.id}
+                  className="relative bg-white shadow rounded-lg overflow-hidden"
+                >
+                  <img
+                    src={related.photo || artikelImage}
+                    alt={related.judul || "Related Article"}
+                    className="w-full h-40 object-cover"
+                  />
+                  <div className="p-4">
+                    <Link
+                      to={`/artikel/${related.id}`}
+                      className="text-green-600 font-semibold text-lg hover:underline"
+                    >
+                      {related.judul || "Untitled Article"}
+                    </Link>
+                    <p className="text-sm text-gray-500 mt-2">
+                      {related.summary || "No summary available"}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500">
+              Tidak ada artikel lain yang ditemukan.
+            </p>
+          )}
+        </div>
+
+        {/* Back to Articles Link */}
+        <div className="mt-8 text-center">
+          <Link to="/artikel" className="text-green-600 hover:underline">
+            Kembali ke Artikel
+          </Link>
+        </div>
       </div>
+      <div className="w-full h-20 bg-green-600 mt-32"></div>
     </div>
   );
 };

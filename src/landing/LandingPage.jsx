@@ -121,7 +121,7 @@ const LandingPage = () => {
             <img
               src={logo}
               alt="Logo"
-              className="w-64 h-56 object-cover rounded-lg shadow-md"
+              className="w-64 h-56 object-cover "
             />
           </div>
           <div>
@@ -193,7 +193,7 @@ const LandingPage = () => {
               </h5>
               <h3 className="text-2xl font-bold leading-tight">{title}</h3>
               <p className="mt-4 text-gray-600">{description}</p>
-
+              <hr className="my-4 border-t border-gray-700" /> 
               {/* Features List */}
               <div
                 className={`mt-6 ${
@@ -217,7 +217,7 @@ const LandingPage = () => {
               <img
                 src={image}
                 alt="Feature"
-                className="w-full max-w-sm md:max-w-md rounded-lg shadow-lg"
+                className="w-full max-w-sm md:max-w-md "
               />
             </div>
           </div>
@@ -305,7 +305,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="w-full h-20 bg-green-600"></section>
+      <section className="w-full h-20 bg-green-600 mt-36"></section>
     </div>
   );
 };
