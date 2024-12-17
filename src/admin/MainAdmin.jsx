@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import DaftarPaket from "./daftarpaket";
 import AdminDashboard from "./dashboard";
 import ListArtikel from "./ListArtikel";
@@ -13,8 +13,8 @@ const MainAdmin = () => {
   const handleLogout = async () => {
     try {
       await axios.post("http://localhost:3000/logoutadmin");
-      localStorage.removeItem("authToken");
-      navigate("/loginadmin");
+      localStorage.removeItem("authToken"); // Hapus token dari localStorage
+      navigate("/loginadmin"); // Arahkan kembali ke halaman login setelah logout
     } catch (error) {
       console.error("Logout gagal:", error);
       alert("Terjadi kesalahan saat logout. Silakan coba lagi.");
@@ -130,16 +130,7 @@ const MainAdmin = () => {
               <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
                 <ul>
                   <li
-                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                    onClick={() => {
-                      alert("Buka halaman Settings!");
-                      // Tambahkan navigasi ke halaman Settings di sini
-                    }}
-                  >
-                    Settings
-                  </li>
-                  <li
-                    className="px-4 py-2 text-red-600 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 cursor-pointer hover:bg-gray-100"
                     onClick={handleLogout}
                   >
                     Logout
@@ -149,7 +140,8 @@ const MainAdmin = () => {
             )}
           </div>
         </div>
-        {renderContent()}
+
+        <div>{renderContent()}</div>
       </main>
     </div>
   );

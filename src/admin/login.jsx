@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
@@ -8,26 +8,35 @@ const AdminLogin = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Jika sudah login sebelumnya, langsung arahkan ke dashboard admin
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      navigate("/dashboardadmin"); // Arahkan ke dashboard admin jika ada token
+    }
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMessage(""); // Clear any previous error
+
     if (!email || !password) {
       setErrorMessage("Email and password are required");
       return;
     }
-    
+
     try {
       const response = await axios.post("http://localhost:3000/loginadmin", {
         email,
         password,
       });
-  
+
       if (response.data.accessToken) {
         localStorage.setItem("authToken", response.data.accessToken);
-        navigate("/dashboardadmin");
+        navigate("/dashboardadmin"); // Setelah login, arahkan ke dashboard admin
       }
     } catch (error) {
-      console.error("Login failed:", error); // Log error to console
+      console.error("Login failed:", error);
       setErrorMessage(error.response?.data?.msg || "Login failed. Check email or password.");
     }
   };
