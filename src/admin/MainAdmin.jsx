@@ -1,10 +1,25 @@
+import axios from "axios";
 import React, { useState } from "react";
-import AdminDashboard from "./dashboard";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import DaftarPaket from "./daftarpaket";
+import AdminDashboard from "./dashboard";
 import ListArtikel from "./ListArtikel";
 
 const MainAdmin = () => {
+  const navigate = useNavigate();  // Initialize useNavigate
   const [activeSection, setActiveSection] = useState("dashboard");
+  const [isProfileDropdownVisible, setProfileDropdownVisible] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post("http://localhost:3000/logoutadmin");
+      localStorage.removeItem("authToken");
+      navigate("/loginadmin");
+    } catch (error) {
+      console.error("Logout gagal:", error);
+      alert("Terjadi kesalahan saat logout. Silakan coba lagi.");
+    }
+  };
 
   const renderContent = () => {
     switch (activeSection) {
@@ -63,7 +78,7 @@ const MainAdmin = () => {
               src={
                 activeSection === "daftarPaket"
                   ? "src/assets/images/icon-daftarPaket-2.png"
-                  : "src/assets/images/icon-daftarPaket.png" // path to your icon image
+                  : "src/assets/images/icon-daftarPaket.png"
               }
               alt="Daftar Paket Icon"
               className="w-6 h-6 mr-3"
@@ -81,8 +96,8 @@ const MainAdmin = () => {
             <img
               src={
                 activeSection === "listArtikel"
-                  ? "src/assets/images/icon-postArtikel-2.png" // path to your icon image
-                  : "src/assets/images/icon-postArtikel.png" // path to your icon image
+                  ? "src/assets/images/icon-postArtikel-2.png"
+                  : "src/assets/images/icon-postArtikel.png"
               }
               alt="List Artikel Icon"
               className="w-6 h-6 mr-3"
@@ -94,7 +109,7 @@ const MainAdmin = () => {
 
       {/* Main Content */}
       <main className="flex-1 p-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 relative">
           <div className="relative">
             <input
               type="text"
@@ -102,11 +117,37 @@ const MainAdmin = () => {
               className="p-2 pl-10 pr-4 border border-gray-300 rounded-full focus:outline-none"
             />
           </div>
-          <img
-            src="src/assets/images/profil.png"
-            alt="User Profile"
-            className="w-10 h-10 rounded-full"
-          />
+
+          {/* Profile Dropdown */}
+          <div className="relative">
+            <img
+              src="src/assets/images/profil.png"
+              alt="User Profile"
+              className="w-10 h-10 rounded-full cursor-pointer"
+              onClick={() => setProfileDropdownVisible(!isProfileDropdownVisible)}
+            />
+            {isProfileDropdownVisible && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
+                <ul>
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                    onClick={() => {
+                      alert("Buka halaman Settings!");
+                      // Tambahkan navigasi ke halaman Settings di sini
+                    }}
+                  >
+                    Settings
+                  </li>
+                  <li
+                    className="px-4 py-2 text-red-600 hover:bg-gray-100 cursor-pointer"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
         {renderContent()}
       </main>
