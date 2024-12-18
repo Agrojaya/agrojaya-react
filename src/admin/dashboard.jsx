@@ -1,15 +1,18 @@
 import axios from 'axios';
 import { saveAs } from 'file-saver';
 import React, { useEffect, useState } from 'react';
-import { FaPrint, FaSearch } from 'react-icons/fa';
+import { FaEdit, FaPrint, FaSearch } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import * as XLSX from 'xlsx';
+import EditTransactionModal from './EditTransactionModal';
 
 const AdminDashboard = () => {
 	const [transactions, setTransactions] = useState([]);
 	const [admin, setAdmin] = useState({ username: '' });
 	const [searchTerm, setSearchTerm] = useState('');
 	const [loading, setLoading] = useState(true);
+	const [showModal, setShowModal] = useState(false);
+	const [selectedTransaction, setSelectedTransaction] = useState(null);
 	const navigate = useNavigate();
 
 	// Fungsi untuk mengecek token
@@ -22,7 +25,7 @@ const AdminDashboard = () => {
 		}
 		return true;
 	};
-	
+
 	// Fetch data transaksi
 	useEffect(() => {
 		const fetchData = async () => {
@@ -79,18 +82,61 @@ const AdminDashboard = () => {
 		);
 	});
 
+	// Fungsi untuk membuka modal dan memuat data transaksi
+	const handleEditClick = async (orderId) => {
+		try {
+			const token = localStorage.getItem('authToken');
+			const headers = { Authorization: `Bearer ${token}` };
+			const response = await axios.get(`http://localhost:3000/transaksi/byid/${orderId}`, { headers });
+			setSelectedTransaction(response.data);
+			setShowModal(true);
+		} catch (error) {
+			console.error('Gagal memuat data transaksi:', error);
+			alert('Gagal memuat data transaksi.');
+		}
+	};
+
+	// Fungsi untuk menangani perubahan pada form
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setSelectedTransaction((prev) => ({ ...prev, [name]: value }));
+	};
+
+	// Fungsi untuk menyimpan perubahan
+	const handleSaveChanges = async () => {
+		try {
+			const token = localStorage.getItem('authToken');
+			const headers = { Authorization: `Bearer ${token}` };
+
+			await axios.put(
+				`http://localhost:3000/transaksi/${selectedTransaction.order_id}/update`,
+				selectedTransaction,
+				{ headers }
+			);
+			alert('Transaksi berhasil diperbarui.');
+			setShowModal(false);
+			// Refresh data transaksi
+			setTransactions((prev) =>
+				prev.map((trx) =>
+					trx.order_id === selectedTransaction.order_id ? selectedTransaction : trx
+				)
+			);
+		} catch (error) {
+			console.error('Gagal menyimpan perubahan:', error);
+			alert('Gagal menyimpan perubahan.');
+		}
+	};
+
 	if (loading) {
 		return <div className='text-center py-10'>Memuat data...</div>;
 	}
 
 	return (
 		<div className='p-6 bg-gray-100 min-h-screen'>
-			{/* Selamat Datang */}
 			<div className='bg-white rounded-lg shadow p-4 mb-6'>
 				<h2 className='text-2xl font-bold'>{`Selamat Datang, ${admin.username}!`}</h2>
 			</div>
 
-			{/* Daftar Transaksi */}
 			<div className='bg-white p-6 rounded-lg shadow-lg'>
 				<div className='flex justify-between mb-4'>
 					<h3 className='font-bold text-lg'>Daftar Transaksi</h3>
@@ -114,7 +160,6 @@ const AdminDashboard = () => {
 					</div>
 				</div>
 
-				{/* Tabel Transaksi */}
 				<div className='overflow-x-auto'>
 					<table className='w-full border'>
 						<thead>
@@ -136,34 +181,24 @@ const AdminDashboard = () => {
 										<td className='p-2'>{trx.order_id}</td>
 										<td className='p-2'>{trx.uid}</td>
 										<td className='p-2'>{trx.paket_id}</td>
-										<td className='p-2'>Rp {trx.total_harga}</td>
+										<td className='p-2'>{trx.total_harga}</td>
 										<td className='p-2'>{trx.tanggal}</td>
 										<td className='p-2'>{trx.status_pembayaran}</td>
 										<td className='p-2'>{trx.status_transaksi}</td>
 										<td className='p-2'>
 											<button
-												className='p-1 bg-blue-600 text-white rounded-md hover:bg-blue-700'
-												onClick={() => handleUpdatePaymentStatus(trx.id, 'Lunas')}
+												className='p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700'
+												onClick={() => handleEditClick(trx.order_id)}
 											>
-												Ubah Status Pembayaran
-											</button>
-										</td>
-										<td className='p-2'>
-											<button
-												className='p-1 bg-orange-600 text-white rounded-md hover:bg-orange-700'
-												onClick={() =>
-													handleUpdateTransactionStatus(trx.id, 'Selesai')
-												}
-											>
-												Ubah Status Transaksi
+												<FaEdit /> Edit
 											</button>
 										</td>
 									</tr>
 								))
 							) : (
 								<tr>
-									<td colSpan='7' className='text-center py-4'>
-										Tidak ada transaksi ditemukan.
+									<td colSpan='8' className='text-center py-4'>
+										Tidak ada data transaksi.
 									</td>
 								</tr>
 							)}
@@ -171,6 +206,14 @@ const AdminDashboard = () => {
 					</table>
 				</div>
 			</div>
+
+			<EditTransactionModal
+				show={showModal}
+				transaction={selectedTransaction}
+				onClose={() => setShowModal(false)}
+				onChange={handleInputChange}
+				onSave={handleSaveChanges}
+			/>
 		</div>
 	);
 };
