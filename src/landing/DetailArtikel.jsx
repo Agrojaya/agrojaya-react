@@ -1,6 +1,6 @@
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import artikelImage from "../assets/images/artikel-image.png"; // Ganti dengan path gambar yang sesuai
 import profile from "../assets/images/profil.png"; // Ganti dengan path foto penulis
 
@@ -13,7 +13,7 @@ const DetailArtikel = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/artikel/${id}`);
+        const response = await fetch(`http://localhost:3000/api/artikel/${id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch article");
         }
@@ -101,9 +101,7 @@ const DetailArtikel = () => {
         <div className="mt-4 text-left">
           <p className="text-green-600 font-semibold mb-2">Bagikan Modul Ini</p>
 
-
           <div className="flex justify-left space-x-4">
-
             <a href="#" className="text-blue-500 hover:text-blue-700">
               <i className="fab fa-facebook fa-2x"></i>
             </a>
@@ -128,7 +126,7 @@ const DetailArtikel = () => {
         <div className="mt-10">
           <h3 className="text-xl font-semibold mb-6">Artikel Lainnya</h3>
           {article.relatedArticles?.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {article.relatedArticles.map((related) => (
                 <div
                   key={related.id}
