@@ -8,10 +8,12 @@ import Navbar from "./components/Navbar";
 import Header from "./components/Header";
 import LandingPage from "./landing/LandingPage";
 import ArtikelPage from "./landing/ArtikelPage";
-import DetailArtikel from "./landing/DetailArtikel";
+import DetailArtikel from "./landing/DetailArtikel"; // Pastikan path sudah benar
 import Footer from "./components/Footer";
 import AdminLogin from "./admin/login";
 import AdminDashboard from "./admin/MainAdmin";
+import ListArtikel from "./admin/ListArtikel";
+import TambahArtikel from "./admin/TambahArtikel";
 
 function App() {
   const location = useLocation();
@@ -31,9 +33,12 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/artikel" element={<ArtikelPage />} />
-        <Route path="/detail-artikel" element={<DetailArtikel />} />
+        <Route path="/artikel/:id" element={<DetailArtikel />} />{" "}
+        {/* Perbaikan route */}
         <Route path="/loginadmin" element={<AdminLogin />} />
         <Route path="/dashboardadmin" element={<AdminDashboard />} />
+        <Route path="/listartikel" element={<ListArtikel />} />
+        <Route path="/postartikel" element={<TambahArtikel />} />
       </Routes>
 
       {/* Footer only if not on login or admin dashboard routes */}
