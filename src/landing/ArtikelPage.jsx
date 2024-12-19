@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import artikelImage from "../assets/images/artikel-image.png"; // Replace with your actual image path
+import axios from "axios";
 
 const ArtikelPage = () => {
   const [articles, setArticles] = useState([]);
@@ -10,24 +11,22 @@ const ArtikelPage = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/artikel");
-        if (!response.ok) {
-          throw new Error("Failed to fetch articles");
-        }
-        const data = await response.json();
-        setArticles(data);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/artikel`
+        );      
+        // Menyimpan data artikel ke state
+        setArticles(response.data); 
       } catch (err) {
+        // Menangani kesalahan
         setError(err.message);
         console.error("Error fetching articles:", err);
       } finally {
         setLoading(false);
       }
     };
-    window.scrollTo(0, 0); 
-
+    window.scrollTo(0, 0);
     fetchArticles();
   }, []);
-
   return (
     <div className="min-h-screen flex flex-col ">
       {/* Hero Section */}

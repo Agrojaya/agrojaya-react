@@ -12,7 +12,7 @@ const MainAdmin = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:3000/logoutadmin");
+      await axios.post(`${import.meta.env.VITE_API_URL}/logoutadmin`);
       localStorage.removeItem("authToken"); // Hapus token dari localStorage
       navigate("/loginadmin"); // Arahkan kembali ke halaman login setelah logout
     } catch (error) {

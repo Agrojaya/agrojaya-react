@@ -12,6 +12,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { FaArrowRight } from "react-icons/fa";
+import axios from "axios";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -21,11 +22,12 @@ const LandingPage = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/artikel");
-        const data = await response.json();
-        setArticles(data);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/artikel`
+        );
+        setArticles(response.data); // Data dari respons
       } catch (error) {
-        console.error("Error fetching articles:", error);
+        console.error("Error fetching articles:", error.message);
       }
     };
 
@@ -118,11 +120,7 @@ const LandingPage = () => {
         <div className="flex flex-col md:flex-row items-center w-full max-w-3xl p-6 gap-6">
           {/* Logo Section */}
           <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-24">
-            <img
-              src={logo}
-              alt="Logo"
-              className="w-64 h-56 object-cover "
-            />
+            <img src={logo} alt="Logo" className="w-64 h-56 object-cover " />
           </div>
           <div>
             <h4 className="text-center text-2xl font-semibold text-green-600 mb-1">
@@ -193,7 +191,7 @@ const LandingPage = () => {
               </h5>
               <h3 className="text-2xl font-bold leading-tight">{title}</h3>
               <p className="mt-4 text-gray-600">{description}</p>
-              <hr className="my-4 border-t border-gray-700" /> 
+              <hr className="my-4 border-t border-gray-700" />
               {/* Features List */}
               <div
                 className={`mt-6 ${
