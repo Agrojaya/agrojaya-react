@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 const TambahArtikel = ({ onClose }) => {
@@ -54,10 +55,16 @@ const TambahArtikel = ({ onClose }) => {
 
     try {
       setIsSubmitting(true);
-      const response = await fetch("http://localhost:3000/api/artikel", {
-        method: "POST",
-        body: formData,
-      });
+  
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/artikel`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       const result = await response.json();
       setIsSubmitting(false);

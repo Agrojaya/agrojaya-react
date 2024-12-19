@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import artikelImage from "../assets/images/artikel-image.png"; // Ganti dengan path gambar yang sesuai
 import profile from "../assets/images/profil.png"; // Ganti dengan path foto penulis
+import axios from "axios";
 
 const DetailArtikel = () => {
   const { id } = useParams(); // Ambil ID dari URL
@@ -13,12 +14,10 @@ const DetailArtikel = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/artikel/${id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch article");
-        }
-        const data = await response.json();
-        setArticle(data);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/artikel/${id}`
+        );
+        setArticle(response.data);
       } catch (err) {
         setError(err.message);
         console.error("Error fetching article:", err);
@@ -26,7 +25,6 @@ const DetailArtikel = () => {
         setLoading(false);
       }
     };
-
     if (id) {
       fetchArticle();
     }
@@ -102,19 +100,53 @@ const DetailArtikel = () => {
           <p className="text-green-600 font-semibold mb-2">Bagikan Modul Ini</p>
 
           <div className="flex justify-left space-x-4">
-            <a href="#" className="text-blue-500 hover:text-blue-700">
+            {/* Facebook Share */}
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                window.location.href
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-700"
+            >
               <i className="fab fa-facebook fa-2x"></i>
             </a>
 
-            <a href="#" className="text-gray-500 hover:text-gray-700">
+            {/* Twitter Share */}
+            <a
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                window.location.href
+              )}&text=${encodeURIComponent(
+                article.judul || "Check out this article!"
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-gray-700"
+            >
               <i className="fab fa-x-twitter fa-2x"></i>
             </a>
 
-            <a href="#" className="text-blue-600 hover:text-blue-800">
+            {/* LinkedIn Share */}
+            <a
+              href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
+                window.location.href
+              )}&title=${encodeURIComponent(
+                article.judul || "Check out this article!"
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800"
+            >
               <i className="fab fa-linkedin fa-2x"></i>
             </a>
 
-            <a href="#" className="text-green-500 hover:text-green-700">
+            {/* Email Share */}
+            <a
+              href={`mailto:?subject=${encodeURIComponent(
+                article.judul || "Check out this article!"
+              )}&body=${encodeURIComponent(window.location.href)}`}
+              className="text-green-500 hover:text-green-700"
+            >
               <i className="fas fa-envelope fa-2x"></i>
             </a>
           </div>

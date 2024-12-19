@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaPrint, FaSearch } from "react-icons/fa";
+import axios from "axios";
 
 const TransactionList = () => {
   const [transactions, setTransactions] = useState([]);
@@ -12,20 +13,17 @@ const TransactionList = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch("http://localhost:3000/transaksis"); // Ganti URL API sesuai dengan backend
-        if (!response.ok) {
-          throw new Error("Gagal memuat data transaksi");
-        }
-        const data = await response.json();
-        setTransactions(data);
-        setFilteredTransactions(data);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/transaksi`);
+
+        // Pastikan data diatur dengan benar
+        setTransactions(response.data);
+        setFilteredTransactions(response.data);
       } catch (err) {
-        setError(err.message);
+        setError(err.response?.data?.message || "Gagal memuat data transaksi");
       } finally {
         setIsLoading(false);
       }
     };
-
     fetchTransactions();
   }, []);
 

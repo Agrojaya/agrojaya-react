@@ -49,7 +49,7 @@ const UbahArtikel = ({ onClose, articleData }) => {
 
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/artikel/${articleData.id}`,
+        `${import.meta.env.VITE_API_URL}/api/artikel/${articleData.id}`,
         formData,
         {
           headers: {

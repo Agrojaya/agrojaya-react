@@ -28,7 +28,7 @@ const TambahPaket = ({ onClose }) => {
     formData.append("photo", photo);
 
     try {
-      await axios.post("http://localhost:3000/data_paket", formData, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/data_paket`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("Paket berhasil ditambahkan!");

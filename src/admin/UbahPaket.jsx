@@ -42,7 +42,7 @@ const UbahPaket = ({ onClose, paketData }) => {
 
     try {
       await axios.put(
-        `http://localhost:3000/data_paket/${paketData.id}`,
+        `${import.meta.env.VITE_API_URL}/data_paket/${paketData.id}`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

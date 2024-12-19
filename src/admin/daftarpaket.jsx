@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaEllipsisV, FaTrash, FaEdit } from "react-icons/fa";
 import TambahPaket from "./TambahPaket";
 import UbahPaket from "./UbahPaket";
-
+import axios from "axios";
 const DaftarPaket = () => {
   const [paket, setPaket] = useState([]); // State untuk menyimpan data paket
   const [showTambahPaket, setShowTambahPaket] = useState(false); // State modal tambah
@@ -14,16 +14,19 @@ const DaftarPaket = () => {
   useEffect(() => {
     const fetchPaket = async () => {
       try {
-        const response = await fetch("http://localhost:3000/data_paket");
-        const data = await response.json();
-        setPaket(data);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/data_paket`
+        );
+
+        // Mengatur data paket yang diambil
+        setPaket(response.data);
       } catch (error) {
         console.error("Error fetching packages:", error);
       }
     };
 
     fetchPaket();
-  }, []);
+  }, []); 
 
   // Toggle modal tambah paket
   const toggleTambahPaket = () => setShowTambahPaket(!showTambahPaket);

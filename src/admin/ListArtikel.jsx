@@ -3,6 +3,7 @@ import { FaEllipsisV, FaTrash, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom"; // Import Link untuk navigasi
 import TambahArtikel from "./TambahArtikel";
 import UbahArtikel from "./UbahArtikel"; // Import form edit artikel
+import axios from "axios";
 
 const ListArtikel = () => {
   const [articles, setArticles] = useState([]); // State untuk menyimpan data artikel
@@ -15,9 +16,12 @@ const ListArtikel = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/artikel"); // Ganti dengan URL backend
-        const data = await response.json();
-        setArticles(data);
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/artikel`
+        );
+
+        // Menyimpan data artikel yang diperoleh
+        setArticles(response.data);
       } catch (error) {
         console.error("Error fetching articles:", error);
       }
